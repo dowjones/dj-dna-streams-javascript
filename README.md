@@ -25,7 +25,7 @@ npm install git+https://git@github.dowjones.net/syndicationhub/dj-dna-streaming-
 
 #### Execute with Environment Variables
 
-When executing code that invokes this module ensure you have set the following environment variables -- GOOGLE_CLOUD_AUTHENTICATION and GCLOUD_PROJECT.
+When executing code that invokes this module ensure you have set the following environment variables -- GOOGLE_CLOUD_AUTHENTICATION, GCLOUD_PROJECT and SUBSCRIBER_NAME.
 
 ###### GOOGLE_CLOUD_AUTHENTICATION
 
@@ -34,6 +34,10 @@ This environment variable should hold the file path of your Dow Jones provided s
 ###### GCLOUD_PROJECT
 
 Set this environment variable to the Dow Jones provided Google Cloud Project name.
+
+###### SUBSCRIBER_NAME
+
+Set this environment variable to your Dow Jones provided subscriber name.
 
 ###### Example Execution Command (MacOS)
 
