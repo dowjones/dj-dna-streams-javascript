@@ -1,0 +1,23 @@
+{
+  "name": "dj-dna-streaming-javascript",
+  "version": "0.0.9",
+  "description": "Client to consume Dow Jones topic publishing events",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.dowjones.net/syndicationhub/dj-dna-streaming-javascript.git"
+  },
+  "author": "Dow Jones",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "eslint": "^3.10.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.7.1",
+    "google-cloud": "^0.44.0"
+  }
+}
