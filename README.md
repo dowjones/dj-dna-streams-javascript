@@ -8,12 +8,18 @@ DNA Streaming Client - written in Javascript.
 Install this at your project root by invoking the following command line:
 
 ~~~~
-npm install git+https://git@github.dowjones.net/syndicationhub/dj-dna-streaming-javascript.git --save 
+npm install git+https://git@github.dowjones.net/syndicationhub/dj-dna-streaming-javascript.git --save
+~~~~
+ 
+ or 
+
+~~~~
+npm install --save dj-dna-streaming-javascript --registry http://registry.npm.wsjfdev.dowjones.net/
 ~~~~
 
 #### Add Code to Subscribe to a DNA Topic or Two:
 
-> const djDnaStreaming = require('dj-dna-streaming')
+> const djDnaStreaming = require('dj-dna-streaming');
 >
 > const onMessageCallback = function(msg, topic) {
 >    console.log('One incoming message:' + JSON.stringify(msg.data));
