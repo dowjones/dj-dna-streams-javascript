@@ -4,7 +4,8 @@ const googleCloud = require('google-cloud');
 class Subscriber {
 
   constructor() {
-    this.gCloudProject = googleCloud({ project: process.env.GCLOUD_PROJECT });
+    this.gCloudProjectName = (process.env.GCLOUD_PROJECT) ? process.env.GCLOUD_PROJECT : 'djsyndicationhub';
+    this.gCloudProject = googleCloud({ project: this.gCloudProjectName });
   }
 
   /**

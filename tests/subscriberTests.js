@@ -12,6 +12,11 @@ describe('Given Subscriber object', () => {
     sandbox.restore();
   });
 
+  it('should use the default cloud project', () => {
+    expect(process.env.GCLOUD_PROJECT).not.toBeDefined();
+    expect(subscriber.gCloudProjectName).toBe('djsyndicationhub');
+  });
+
   it('subscribing should succeed.', () => {
     const expectedSubscriberName = 'AcmeCompany';
     process.env.SUBSCRIBER_NAME = expectedSubscriberName;
