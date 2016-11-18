@@ -37,13 +37,13 @@ When executing code that invokes this module ensure you have set the following e
 
 This environment variable should hold the file path of your Dow Jones provided security json file (googleApplicationCredentials.json).
 
-###### GCLOUD_PROJECT
-
-Set this environment variable to the Dow Jones provided Google Cloud Project name.
-
 ###### SUBSCRIBER_NAME
 
 Set this environment variable to your Dow Jones provided subscriber name.
+
+###### GCLOUD_PROJECT (optional)
+
+Most users will not need to use this variable. If you do not set this environment variable the code will use the default Dow Jones DNA Google Cloud production project name.
 
 ###### Example Execution Command (MacOS)
 
