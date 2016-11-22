@@ -8,6 +8,14 @@ class Subscriber {
     this.gCloudProject = googleCloud({ project: this.gCloudProjectName });
   }
 
+  getUserKey() {
+    if (!process.env.USER_KEY) {
+      throw new Error('Encountered error attempting to subscribe to a Dow Jones event. The USER_KEY environment variable was not set." + ' +
+        ' Ensure you set this variable to the Dow Jones supplied value.');
+    }
+    return process.env.USER_KEY;
+  }
+
   /**
    * This callback type is called `subscriptionOnMessageCallback` and is displayed as part of this class.
    *
@@ -19,14 +27,17 @@ class Subscriber {
   /**
    * This function allows you to subscribe to published topic messages.
    *
-   * @param {string[]} Subscription topics - Collection of topics you wish to subscribe to.
    * @param {subscriptionOnMessageCallback} onMessageCallback - The callback that handles the topic message when it arrives.
+   * @param {string[]=['ContentEventTranslated']} [topics] - [Optional] collection of topics you wish to subscribe to. Defaults to 'ContentEventTranslated'. Leave as null or undefined if you
+   * want to use the default.
    */
-  subscribe(topics, onMessageCallback) {
+  subscribe(onMessageCallback, topics) {
+    const ensuredTopics = topics || ['ContentEventTranslated'];
+
     const pubsubClient = this.gCloudProject.pubsub();
     const subscriptions = [];
 
-    topics.forEach((topic) => {
+    ensuredTopics.forEach((topic) => {
       console.log(`Subscribing to ${topic}`);
 
       const onMessage = (msg) => {
@@ -34,7 +45,7 @@ class Subscriber {
         return onMessageCallback(msg, topic);
       };
 
-      const name = `${topic}_Live_${process.env.SUBSCRIBER_NAME}`;
+      const name = `${topic}_Live_${this.getUserKey()}`;
       console.log(`Subscription name: ${name}`);
 
       pubsubClient.subscribe(topic, name, { reuseExisting: true, autoAck: true, interval: 10, maxInProgress: 100, timeout: 20000 },
