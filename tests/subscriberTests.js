@@ -3,9 +3,11 @@ const subscriber = require('../subscriber');
 
 describe('Given Subscriber object', () => {
   let sandbox;
+  const expectedUserKey = 'AcmeCompany';
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
+    process.env.USER_KEY = expectedUserKey;
   });
 
   afterEach(() => {
@@ -18,9 +20,6 @@ describe('Given Subscriber object', () => {
   });
 
   it('subscribing should succeed.', () => {
-    const expectedSubscriberName = 'AcmeCompany';
-    process.env.SUBSCRIBER_NAME = expectedSubscriberName;
-
     const topics = ['foo', 'bar'];
 
     let subscribeCalls = 0;
@@ -30,7 +29,8 @@ describe('Given Subscriber object', () => {
         subscribe: (topic, name, options) => {
           subscribeCalls += 1;
 
-          expect(name.endsWith(expectedSubscriberName)).toBe(true);
+          expect(name.startsWith(topic)).toBe(true);
+          expect(name.endsWith(expectedUserKey)).toBe(true);
           expect(options.reuseExisting).toBe(true);
           expect(options.autoAck).toBe(true);
           expect(options.interval).toBe(10);
@@ -42,11 +42,29 @@ describe('Given Subscriber object', () => {
 
     expect(subscriber).toBeDefined();
 
-    // NOTE: 11-18-2016: fleschec: No need to provide a second argument 'onMessageCallback' since we are mocking
+    // NOTE: 11-18-2016: fleschec: No need to provide a first argument 'onMessageCallback' since we are mocking
     // the test in such a way that no messages will ever be returned.
-    subscriber.subscribe(topics, null);
+    subscriber.subscribe(null, topics);
 
     expect(pubSub.calledOnce).toBe(true);
     expect(subscribeCalls).toBe(topics.length);
+  });
+
+  it('and no topic is provided subscribing should use the default topic.', () => {
+    let subscribeCalls = 0;
+    const pubSub = sandbox.stub(subscriber.gCloudProject, 'pubsub', () => {
+      return {
+        subscribe: (topic, name, options) => {
+          subscribeCalls += 1;
+
+          expect(topic).toBe('ContentEventTranslated');
+        },
+      };
+    });
+
+    subscriber.subscribe(null);
+
+    expect(pubSub.calledOnce).toBe(true);
+    expect(subscribeCalls).toBe(1);
   });
 });
