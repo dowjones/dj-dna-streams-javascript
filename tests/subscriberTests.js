@@ -1,9 +1,10 @@
 const sinon = require('sinon');
 const subscriber = require('../subscriber');
+const configUtil = require('../config/configUtil');
 
 describe('Given Subscriber object', () => {
   let sandbox;
-  const expectedUserKey = 'AcmeCompany';
+  const expectedUserKey = 'cool-guy';
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
@@ -16,7 +17,9 @@ describe('Given Subscriber object', () => {
 
   it('should use the default cloud project', () => {
     expect(process.env.GCLOUD_PROJECT).not.toBeDefined();
-    expect(subscriber.gCloudProjectName).toBe('djsyndicationhub');
+    expect(subscriber.gCloudProjectName).toBe('project-awesome');
+
+    expect(configUtil.getUserKey()).toBe(expectedUserKey);
   });
 
   it('subscribing should succeed.', () => {
