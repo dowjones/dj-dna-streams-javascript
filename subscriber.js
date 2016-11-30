@@ -28,7 +28,7 @@ class Subscriber {
    */
   subscribe(onMessageCallback, topics) {
     const ensuredTopics = topics || this.defaultTopics;
-    const pubsubClient = this.gCloudProject.pubsub();
+    const pubsubClient = this.gCloudProject.pubsub({ projectId: this.gCloudProjectName });
     const subscriptions = [];
 
     ensuredTopics.forEach((topic) => {
