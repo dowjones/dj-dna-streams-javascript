@@ -1,19 +1,13 @@
 const googleCloud = require('google-cloud');
+const configUtil = require('./config/configUtil');
 
 /** Class that allows you to subscribe to a Dow Jones topic feed. This is a singleton. */
 class Subscriber {
 
   constructor() {
-    this.gCloudProjectName = (process.env.GCLOUD_PROJECT) ? process.env.GCLOUD_PROJECT : 'djsyndicationhub';
+    this.gCloudProjectName = configUtil.getProjectName();
     this.gCloudProject = googleCloud({ project: this.gCloudProjectName });
-  }
-
-  getUserKey() {
-    if (!process.env.USER_KEY) {
-      throw new Error('Encountered error attempting to subscribe to a Dow Jones event. The USER_KEY environment variable was not set." + ' +
-        ' Ensure you set this variable to the Dow Jones supplied value.');
-    }
-    return process.env.USER_KEY;
+    this.userKey = configUtil.getUserKey();
   }
 
   /**
@@ -45,7 +39,7 @@ class Subscriber {
         return onMessageCallback(msg, topic);
       };
 
-      const name = `${topic}_Live_${this.getUserKey()}`;
+      const name = `${topic}_Live_${configUtil.getUserKey()}`;
       console.log(`Subscription name: ${name}`);
 
       pubsubClient.subscribe(topic, name, { reuseExisting: true, autoAck: true, interval: 10, maxInProgress: 100, timeout: 20000 },

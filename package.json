@@ -4,7 +4,7 @@
   "description": "Client to consume Dow Jones topic publishing events",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "export GOOGLE_APPLICATION_CREDENTIALS=./tests/sampleGoogleApplicationCredentials.json && gulp test"
   },
   "repository": {
     "type": "git",
@@ -13,12 +13,14 @@
   "author": "Dow Jones",
   "license": "UNLICENSED",
   "dependencies": {
+    "google-cloud": "^0.44.0"
+  },
+  "devDependencies": {
     "eslint": "^3.10.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
-    "google-cloud": "^0.44.0",
     "gulp": "^3.9.1",
     "gulp-jasmine": "^2.4.2",
     "sinon": "^1.17.6"
