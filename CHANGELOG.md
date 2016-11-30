@@ -14,3 +14,10 @@
 ==================
 - [breaking] Changed required environment variable SUBSCRIBER_NAME to USER_KEY.
 - [breaking] Changed order of subscribe method arguments - callback comes first now. Topic is the second argument now and optional. If no topic array is passed then the default topic will be 'ContentEventTranslated'.
+
+0.1.3 / 2016-11-30
+==================
+- [breaking] Removed required environment variables SUBSCRIBER_NAME to USER_KEY.
+- [breaking] Added required GOOGLE_APPLICATION_CREDENTIALS environment variable file.
+- [Tests] Updated tests to reflect breaking changes (above).
+- [docs] Updated README.md. Modified to reflect these changes.

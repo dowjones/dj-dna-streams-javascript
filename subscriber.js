@@ -8,6 +8,7 @@ class Subscriber {
     this.gCloudProjectName = configUtil.getProjectName();
     this.gCloudProject = googleCloud({ project: this.gCloudProjectName });
     this.userKey = configUtil.getUserKey();
+    this.defaultTopics = configUtil.getTopics();
   }
 
   /**
@@ -22,12 +23,11 @@ class Subscriber {
    * This function allows you to subscribe to published topic messages.
    *
    * @param {subscriptionOnMessageCallback} onMessageCallback - The callback that handles the topic message when it arrives.
-   * @param {string[]=['ContentEventTranslated']} [topics] - [Optional] collection of topics you wish to subscribe to. Defaults to 'ContentEventTranslated'. Leave as null or undefined if you
+   * @param {string[]=['ContentEventTranslated']} [topics] - [Optional] collection of topics you wish to subscribe to. Defaults to the topics listed in your credentials security file. Leave as null or undefined if you
    * want to use the default.
    */
   subscribe(onMessageCallback, topics) {
-    const ensuredTopics = topics || ['ContentEventTranslated'];
-
+    const ensuredTopics = topics || this.defaultTopics;
     const pubsubClient = this.gCloudProject.pubsub();
     const subscriptions = [];
 
@@ -39,7 +39,7 @@ class Subscriber {
         return onMessageCallback(msg, topic);
       };
 
-      const name = `${topic}_Live_${configUtil.getUserKey()}`;
+      const name = `${topic}_Live_${this.userKey}`;
       console.log(`Subscription name: ${name}`);
 
       pubsubClient.subscribe(topic, name, { reuseExisting: true, autoAck: true, interval: 10, maxInProgress: 100, timeout: 20000 },

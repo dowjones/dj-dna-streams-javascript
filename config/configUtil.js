@@ -32,6 +32,10 @@ class ConfigUtil {
   getProjectName() {
     return this.credentials.dj_dna_streaming.project_name;
   }
+
+  getTopics() {
+    return this.credentials.dj_dna_streaming.defaultTopics;
+  }
 }
 
 module.exports = new ConfigUtil();

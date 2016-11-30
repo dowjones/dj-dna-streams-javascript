@@ -19,14 +19,25 @@ npm install --save dj-dna-streaming-javascript --registry http://registry.npm.ws
 
 #### Add Code to Subscribe to a DNA Topic or Two:
 
-> const djDnaStreaming = require('dj-dna-streaming');
+> var djDnaStreaming = require('dj-dna-streaming');
 >
-> const onMessageCallback = function(msg, topic) {
+> var onMessageCallback = function(msg, topic) {
 >    console.log('One incoming message:' + JSON.stringify(msg.data));
 >    console.log('Incoming message\'s topic: ' + topic);  
 > };
 >
-> djDnaStreaming.subscribe(['topic-1', 'topic-2'], onMessageCallback);
+> djDnaStreaming.subscribe(onMessageCallback);
+
+
+#### Specifying Different Topics
+
+The event topics will default to those listed in the Dow Jones supplied credentials file. 
+
+However if you want to specify your own topics you can. Add a 'topics' argument to the subscribe function call like so:
+
+> var topics = ['someEvent1', 'someOtherEvent'];
+
+> djDnaStreaming.subscribe(onMessageCallback, topics);
 
 
 #### Execute with Environment Variables
@@ -35,19 +46,11 @@ When executing code that invokes this module ensure you have set the following e
 
 ###### GOOGLE_CLOUD_AUTHENTICATION
 
-This environment variable should hold the file path of your Dow Jones provided security json file (googleApplicationCredentials.json).
-
-###### SUBSCRIBER_NAME
-
-Set this environment variable to your Dow Jones provided subscriber name.
-
-###### GCLOUD_PROJECT (optional)
-
-Most users will not need to use this variable. If you do not set this environment variable the code will use the default Dow Jones DNA Google Cloud production project name.
+This environment variable should hold the file path of your Dow Jones provided security json file (sometimes called 'googleApplicationCredentials.json').
 
 ###### Example Execution Command (MacOS)
 
 ````
-export GOOGLE_APPLICATION_CREDENTIALS=./googleApplicationCredentials.json && export GCLOUD_PROJECT=djsyndicationhub && export SUBSCRIBER_NAME=your-company-name-here && node index.js
+export GOOGLE_APPLICATION_CREDENTIALS=./googleApplicationCredentials.json && node index.js
 ````
 
