@@ -23,8 +23,6 @@ describe('Given Subscriber object', () => {
   });
 
   it('subscribing should succeed.', () => {
-    const topics = ['foo', 'bar'];
-
     let subscribeCalls = 0;
 
     const pubSub = sandbox.stub(subscriber.gCloudProject, 'pubsub', () => {
@@ -47,10 +45,10 @@ describe('Given Subscriber object', () => {
 
     // NOTE: 11-18-2016: fleschec: No need to provide a first argument 'onMessageCallback' since we are mocking
     // the test in such a way that no messages will ever be returned.
-    subscriber.subscribe(null, topics);
+    subscriber.subscribe(null);
 
     expect(pubSub.calledOnce).toBe(true);
-    expect(subscribeCalls).toBe(topics.length);
+    expect(subscribeCalls).toBe(2);
   });
 
   it('and no topic is provided subscribing should use the default topic.', () => {
@@ -59,15 +57,14 @@ describe('Given Subscriber object', () => {
       return {
         subscribe: (topic, name, options) => {
           subscribeCalls += 1;
-
-          expect(topic).toBe('ContentEventTranslated');
         },
       };
     });
 
-    subscriber.subscribe(null);
+    const topics = ['foo', 'bar', 'banana'];
+    subscriber.subscribe(null, topics);
 
     expect(pubSub.calledOnce).toBe(true);
-    expect(subscribeCalls).toBe(1);
+    expect(subscribeCalls).toBe(3);
   });
 });
