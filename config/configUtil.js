@@ -34,7 +34,7 @@ class ConfigUtil {
   }
 
   getTopics() {
-    return this.credentials.dj_dna_streaming.defaultTopics;
+    return this.credentials.dj_dna_streaming.topics;
   }
 }
 

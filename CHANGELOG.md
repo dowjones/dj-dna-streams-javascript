@@ -21,3 +21,8 @@
 - [breaking] Added required GOOGLE_APPLICATION_CREDENTIALS environment variable file.
 - [Tests] Updated tests to reflect breaking changes (above).
 - [docs] Updated README.md. Modified to reflect these changes.
+
+0.1.4 / 2016-11-30
+==================
+- [fix] Fixed broken pubsub client construction; now specifying project name.
+- [fix] Fixed broken function for finding default topic.
