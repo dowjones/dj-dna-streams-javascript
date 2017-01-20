@@ -56,6 +56,8 @@ class Subscriber {
             subscription.on('message', onMessage);
           });
           subscription.on('message', onMessage);
+
+          console.log('Subscriptions have been configured, set and await message arrival.');
         });
     });
   }

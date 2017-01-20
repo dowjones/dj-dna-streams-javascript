@@ -26,3 +26,10 @@
 ==================
 - [fix] Fixed broken pubsub client construction; now specifying project name.
 - [fix] Fixed broken function for finding default topic.
+
+0.1.5 / 2017-01-20
+==================
+- [fix] Removed '.idea' folder from NPM registry by adding .npmignore to project files.
+- [patch] Removed requirement to pass project name in credentials JSON. If none is passed system is hardcoded to default to the Dow Jones DNA production project ID/name.
+- [Tests] Add tests for configUtil changes.
+- [docs] Updated LICENSE file to reflect actual licensing terms.

@@ -53,4 +53,3 @@ This environment variable should hold the file path of your Dow Jones provided s
 ````
 export GOOGLE_APPLICATION_CREDENTIALS=./googleApplicationCredentials.json && node index.js
 ````
-

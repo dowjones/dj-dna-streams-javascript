@@ -15,9 +15,8 @@ describe('Given Subscriber object', () => {
     sandbox.restore();
   });
 
-  it('should use the default cloud project', () => {
+  it('should use the expected sample user key', () => {
     expect(process.env.GCLOUD_PROJECT).not.toBeDefined();
-    expect(subscriber.gCloudProjectName).toBe('project-awesome');
 
     expect(configUtil.getUserKey()).toBe(expectedUserKey);
   });
