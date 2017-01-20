@@ -30,7 +30,8 @@ class ConfigUtil {
   }
 
   getProjectName() {
-    return this.credentials.dj_dna_streaming.project_name;
+    const projectName = this.credentials.dj_dna_streaming.project_name;
+    return projectName || 'djsyndicationhub-prod';
   }
 
   getTopics() {
