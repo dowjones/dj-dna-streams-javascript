@@ -1,6 +1,6 @@
 {
   "name": "dj-dna-streaming-javascript",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Client to consume Dow Jones topic publishing events",
   "main": "index.js",
   "scripts": {
