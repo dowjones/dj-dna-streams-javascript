@@ -4,8 +4,8 @@
   "description": "Client to consume Dow Jones topic publishing events",
   "main": "index.js",
   "scripts": {
-    "test": "export GOOGLE_APPLICATION_CREDENTIALS=./tests/sampleGoogleApplicationCredentials.json && gulp test",
-    "test-cont": "export GOOGLE_APPLICATION_CREDENTIALS=./tests/sampleGoogleApplicationCredentials.json && gulp test-cont"
+    "test": "export DOW_JONES_APPLICATION_CREDENTIALS=./tests/sampleDowJonesApplicationCredentials.json && gulp test",
+    "test-cont": "export DOW_JONES_APPLICATION_CREDENTIALS=./tests/sampleDowJonesApplicationCredentials.json && gulp test-cont"
   },
   "repository": {
     "type": "git",

@@ -42,14 +42,16 @@ However if you want to specify your own topics you can. Add a 'topics' argument 
 
 #### Execute with Environment Variables
 
-When executing code that invokes this module ensure you have set the following environment variables -- GOOGLE_CLOUD_AUTHENTICATION, GCLOUD_PROJECT and SUBSCRIBER_NAME.
+When executing code that invokes this module ensure you have set the following environment variables -- DOW_JONES_APPLICATION_CREDENTIALS.
+
+Set this variable with the path to your credentials file.
 
 ###### GOOGLE_CLOUD_AUTHENTICATION
 
-This environment variable should hold the file path of your Dow Jones provided security json file (sometimes called 'googleApplicationCredentials.json').
+This environment variable should hold the file path of your Dow Jones provided security json file (sometimes called 'dowJonesApplicationCredentials.json', or perhaps '<yourCompany>ApplicationCredentials.json).
 
 ###### Example Execution Command (MacOS)
 
 ````
-export GOOGLE_APPLICATION_CREDENTIALS=./googleApplicationCredentials.json && node index.js
+export DOW_JONES_APPLICATION_CREDENTIALS=./dowJonesApplicationCredentials.json && node index.js
 ````

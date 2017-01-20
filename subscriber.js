@@ -39,7 +39,7 @@ class Subscriber {
         return onMessageCallback(msg, topic);
       };
 
-      const name = `${topic}_Live_${this.userKey}`;
+      const name = `${topic}_${this.userKey}`;
       console.log(`Subscription name: ${name}`);
 
       pubsubClient.subscribe(topic, name, { reuseExisting: true, autoAck: true, interval: 10, maxInProgress: 100, timeout: 20000 },

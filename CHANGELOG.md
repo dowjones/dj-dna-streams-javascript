@@ -18,7 +18,7 @@
 0.1.3 / 2016-11-30
 ==================
 - [breaking] Removed required environment variables SUBSCRIBER_NAME to USER_KEY.
-- [breaking] Added required GOOGLE_APPLICATION_CREDENTIALS environment variable file.
+- [breaking] Added required DOW_JONES_APPLICATION_CREDENTIALS environment variable file.
 - [Tests] Updated tests to reflect breaking changes (above).
 - [docs] Updated README.md. Modified to reflect these changes.
 
@@ -33,3 +33,9 @@
 - [patch] Removed requirement to pass project name in credentials JSON. If none is passed system is hardcoded to default to the Dow Jones DNA production project ID/name.
 - [Tests] Add tests for configUtil changes.
 - [docs] Updated LICENSE file to reflect actual licensing terms.
+
+0.1.6 / 2017-01-20
+==================
+- [breaking] Changed the name of the credentials environment variable we look for. See README.md  
+- [docs] Updated README.md
+- [patch] Changed subscription name we compose for subscriber.
