@@ -36,6 +36,6 @@
 
 0.1.6 / 2017-01-20
 ==================
-- [breaking] Changed the name of the credentials environment variable we look for. See README.md  
 - [docs] Updated README.md
+- [breaking] Changed the name of the credentials environment variable we look for. See README.md  
 - [patch] Changed subscription name we compose for subscriber.
