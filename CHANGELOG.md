@@ -39,3 +39,7 @@
 - [docs] Updated README.md
 - [breaking] Changed the name of the credentials environment variable we look for. See README.md  
 - [patch] Changed subscription name we compose for subscriber.
+
+0.1.7 / 2017-02-09
+==================
+- [patch] Added credential information to google cloud connection since it was not working.
