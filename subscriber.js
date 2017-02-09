@@ -6,7 +6,7 @@ class Subscriber {
 
   constructor() {
     this.gCloudProjectName = configUtil.getProjectName();
-    this.gCloudProject = googleCloud({ project: this.gCloudProjectName });
+    this.gCloudProject = googleCloud({ project: this.gCloudProjectName, credentials: configUtil.credentials });
     this.userKey = configUtil.getUserKey();
     this.defaultTopics = configUtil.getTopics();
   }
