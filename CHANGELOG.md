@@ -43,3 +43,7 @@
 0.1.7 / 2017-02-09
 ==================
 - [patch] Added credential information to google cloud connection since it was not working.
+
+0.1.8 / 2017-04-05
+==================
+- [docs] Updated README.md
