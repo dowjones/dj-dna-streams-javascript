@@ -46,7 +46,7 @@ When executing code that invokes this module ensure you have set the following e
 
 Set this variable with the path to your credentials file.
 
-###### GOOGLE_CLOUD_AUTHENTICATION
+###### Dow Jones Cloud Authentication
 
 This environment variable should hold the file path of your Dow Jones provided security json file (sometimes called 'dowJonesApplicationCredentials.json', or perhaps '<yourCompany>ApplicationCredentials.json).
 
