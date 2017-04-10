@@ -1,7 +1,7 @@
 const googleCloud = require('google-cloud');
 const configUtil = require('./config/configUtil');
 
-/** Class that allows you to subscribe to a Dow Jones topic feed. This is a singleton. */
+/** Class that allows you to listen to a number of Dow Jones PubSub subscriptions. This is a singleton. */
 class Listener {
 
   constructor() {
@@ -42,13 +42,18 @@ class Listener {
         return onMessageCallback(msg, subscription.topic);
       };
 
-      const pubsubSubscription = pubsubClient.subscription(subscription.name);
+      var pubsubSubscription = pubsubClient.subscription(subscription.name);
 
-      pubsubSubscription.on('message', onMessage);
-      pubsubSubscription.on('error', (subErr) => {
-        console.log(`On Subscription Error: ${subErr}`);
-        pubsubSubscription.removeListener('message', onMessage);
+      pubsubSubscription.get().then(function(data) {
+        var pubsubSubscription = data[0];
         pubsubSubscription.on('message', onMessage);
+        pubsubSubscription.on('error', (subErr) => {
+          console.log(`On Subscription Error: ${subErr}`);
+          pubsubSubscription.removeListener('message', onMessage);
+          pubsubSubscription.on('message', onMessage);
+        });
+      }).then(function(err) {
+        console.log(`Error retrieving subscription from Google PubSub: ${err}`);
       });
     });  
 
