@@ -34,8 +34,8 @@ class ConfigUtil {
     return projectName || 'djsyndicationhub-prod';
   }
 
-  getTopics() {
-    return this.credentials.dj_dna_streaming.topics;
+  getSubscriptions() {
+    return this.credentials.dj_dna_streaming.subscriptions;
   }
 }
 
