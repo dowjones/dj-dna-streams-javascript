@@ -1,3 +1,3 @@
-const subscriber = require('./subscriber');
+const listener = require('./listener');
 
-module.exports = subscriber;
+module.exports = listener;

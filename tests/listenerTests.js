@@ -1,8 +1,8 @@
 const sinon = require('sinon');
-const subscriber = require('../subscriber');
+const listener = require('../listener');
 const configUtil = require('../config/configUtil');
 
-describe('Given Subscriber object', () => {
+describe('Given Listener object', () => {
   let sandbox;
   const expectedUserKey = 'cool-guy';
 
@@ -21,47 +21,60 @@ describe('Given Subscriber object', () => {
     expect(configUtil.getUserKey()).toBe(expectedUserKey);
   });
 
-  it('subscribing should succeed.', () => {
+  it('listening should succeed with default subscriptions.', () => {
     let subscribeCalls = 0;
 
-    const pubSub = sandbox.stub(subscriber.gCloudProject, 'pubsub', () => {
+    const pubSub = sandbox.stub(listener.gCloudProject, 'pubsub', () => {
       return {
-        subscribe: (topic, name, options) => {
+        subscription: (name) => {
           subscribeCalls += 1;
-
-          expect(name.startsWith(topic)).toBe(true);
-          expect(name.endsWith(expectedUserKey)).toBe(true);
-          expect(options.reuseExisting).toBe(true);
-          expect(options.autoAck).toBe(true);
-          expect(options.interval).toBe(10);
-          expect(options.maxInProgress).toBe(100);
-          expect(options.timeout).toBe(20000);
+          return {
+            on: (event, cb) => {},
+            removeListener: (event, cb) => {}
+          }
         },
       };
     });
 
-    expect(subscriber).toBeDefined();
+    expect(listener).toBeDefined();
 
     // NOTE: 11-18-2016: fleschec: No need to provide a first argument 'onMessageCallback' since we are mocking
     // the test in such a way that no messages will ever be returned.
-    subscriber.subscribe(null);
+    listener.listen(null);
 
     expect(pubSub.calledOnce).toBe(true);
     expect(subscribeCalls).toBe(2);
   });
 
-  it('and no topic is provided subscribing should use the default topic.', () => {
+  it('listening should succeed with subscriptions input as args.', () => {
     let subscribeCalls = 0;
-    const pubSub = sandbox.stub(subscriber.gCloudProject, 'pubsub', () => {
+    const pubSub = sandbox.stub(listener.gCloudProject, 'pubsub', () => {
       return {
-        subscribe: (topic, name, options) => {
+        subscription: (name) => {
           subscribeCalls += 1;
-        },
+          return {
+            on: (event, cb) => {},
+            removeListener: (event, cb) => {}
+          }          
+        }
       };
     });
 
-    const topics = ['foo', 'bar', 'banana'];
-    subscriber.subscribe(null, topics);
+    const subscriptions = [
+      {
+        'name': 'foo',
+        'topic': 'foo'
+      },
+      { 
+        'name': 'bar',
+        'topic': 'bar'
+      },
+      {
+        'name': 'banana',
+        'topic': 'banana'
+      }
+    ];
+    listener.listen(null, subscriptions);
 
     expect(pubSub.calledOnce).toBe(true);
     expect(subscribeCalls).toBe(3);
