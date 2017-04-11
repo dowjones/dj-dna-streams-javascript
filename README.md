@@ -17,7 +17,7 @@ npm install git+https://git@github.dowjones.net/syndicationhub/dj-dna-streaming-
 npm install --save dj-dna-streaming-javascript --registry http://registry.npm.wsjfdev.dowjones.net/
 ~~~~
 
-#### Add Code to Subscribe to a DNA Topic or Two:
+#### Add Code to Listen to a DNA Subscription or Two:
 
 > var djDnaStreaming = require('dj-dna-streaming');
 >
@@ -26,18 +26,18 @@ npm install --save dj-dna-streaming-javascript --registry http://registry.npm.ws
 >    console.log('Incoming message\'s topic: ' + topic);  
 > };
 >
-> djDnaStreaming.subscribe(onMessageCallback);
+> djDnaStreaming.listen(onMessageCallback);
 
 
 #### Specifying Different Topics
 
-The event topics will default to those listed in the Dow Jones supplied credentials file. 
+The event subscriptions will default to those listed in the Dow Jones supplied credentials file. 
 
-However if you want to specify your own topics you can. Add a 'topics' argument to the subscribe function call like so:
+However if you want to specify your own subscriptions you can. Add a 'subscriptions' argument to the subscribe function call like so:
 
-> var topics = ['someEvent1', 'someOtherEvent'];
+> var subscriptions = [{'name': 'someSubscription', 'topic': 'someTopic'];
 
-> djDnaStreaming.subscribe(onMessageCallback, topics);
+> djDnaStreaming.listen(onMessageCallback, subscriptions);
 
 
 #### Execute with Environment Variables

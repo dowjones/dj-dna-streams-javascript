@@ -47,3 +47,10 @@
 0.1.8 / 2017-04-05
 ==================
 - [docs] Updated README.md
+
+0.1.9 / 2017-04-11
+==================
+- [breaking] Create listeners on subscriptions instead of creating subscriptions on topics
+- [breaking] Changed name of 'subscriber.js' to 'listener.js', and main function name of module from 'subscribe' to 'listen'
+- [breaking] Look for subscriptions as objects with 'name' and 'topic' fields in credentials file instead of just topics
+- [docs] Updated README.md
