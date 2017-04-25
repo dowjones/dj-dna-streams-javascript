@@ -2,6 +2,6 @@
   "extends": ["airbnb/base"],
   "rules": {
     "no-console": "off",
-    "max-len": [2, {"code": 160, "tabWidth": 4, "ignoreUrls": true}]
+    "max-len": [2, {"code": 205, "tabWidth": 4, "ignoreUrls": true}]
   }
 }
