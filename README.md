@@ -42,16 +42,21 @@ However if you want to specify your own subscriptions you can. Add a 'subscripti
 
 #### Execute with Environment Variables
 
-When executing code that invokes this module ensure you have set the following environment variables -- DOW_JONES_APPLICATION_CREDENTIALS.
+When executing code that invokes this module ensure you have set the following environment variables -- DOW_JONES_JSON_CONFIG.
 
-Set this variable with the path to your credentials file.
+Set this variable with the path to your Dow Jones json configuration file ('DowJonesDNA.json').
 
 ###### Dow Jones Cloud Authentication
 
-This environment variable should hold the file path of your Dow Jones provided security json file (sometimes called 'dowJonesApplicationCredentials.json', or perhaps '<yourCompany>ApplicationCredentials.json).
+This environment variable should hold the file path of your Dow Jones provided security json file ('DowJonesDNA.json').
 
 ###### Example Execution Command (MacOS)
 
 ````
-export DOW_JONES_APPLICATION_CREDENTIALS=./dowJonesApplicationCredentials.json && node index.js
+export DOW_JONES_JSON_CONFIG=./DowJonesDNA.json && node index.js
 ````
+
+###### How To Test
+```
+npm test
+```

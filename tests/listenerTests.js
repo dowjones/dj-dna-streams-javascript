@@ -29,9 +29,13 @@ describe('Given Listener object', () => {
         subscription: (name) => {
           subscribeCalls += 1;
           return {
-            on: (event, cb) => {},
-            removeListener: (event, cb) => {}
-          }
+            get: () => {
+              return Promise.resolve([{
+                on: (event, cb) => { return 'foo'; },
+                removeListener: (event, cb) => { return true; },
+              }]);
+            },
+          };
         },
       };
     });
@@ -53,26 +57,30 @@ describe('Given Listener object', () => {
         subscription: (name) => {
           subscribeCalls += 1;
           return {
-            on: (event, cb) => {},
-            removeListener: (event, cb) => {}
-          }          
-        }
+            get: () => {
+              return Promise.resolve([{
+                on: (event, cb) => { return 'foo'; },
+                removeListener: (event, cb) => { return true; },
+              }]);
+            },
+          };
+        },
       };
     });
 
     const subscriptions = [
       {
-        'name': 'foo',
-        'topic': 'foo'
-      },
-      { 
-        'name': 'bar',
-        'topic': 'bar'
+        name: 'foo',
+        topic: 'foo',
       },
       {
-        'name': 'banana',
-        'topic': 'banana'
-      }
+        name: 'bar',
+        topic: 'bar',
+      },
+      {
+        name: 'banana',
+        topic: 'banana',
+      },
     ];
     listener.listen(null, subscriptions);
 

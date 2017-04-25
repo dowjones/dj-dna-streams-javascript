@@ -1,11 +1,11 @@
 {
   "name": "dj-dna-streaming-javascript",
-  "version": "0.1.9",
+  "version": "0.2.1",
   "description": "Client to consume Dow Jones topic publishing events",
   "main": "index.js",
   "scripts": {
-    "test": "export DOW_JONES_APPLICATION_CREDENTIALS=./tests/sampleDowJonesApplicationCredentials.json && gulp test",
-    "test-cont": "export DOW_JONES_APPLICATION_CREDENTIALS=./tests/sampleDowJonesApplicationCredentials.json && gulp test-cont"
+    "test": "export DOW_JONES_JSON_CONFIG=./tests/sampleDowJonesApplicationCredentials.json && gulp test",
+    "test-cont": "export DOW_JONES_JSON_CONFIG=./tests/sampleDowJonesApplicationCredentials.json && gulp test-cont"
   },
   "repository": {
     "type": "git",
