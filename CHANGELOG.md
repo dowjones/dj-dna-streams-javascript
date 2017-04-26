@@ -65,3 +65,8 @@
 0.2.1 / 2017-04-25
 ==================
 - [patch] Fixed bug where getting incorrect message 'Error retrieving subscription from Google PubSub: undefined'.
+
+0.2.2 / 2017-04-26
+==================
+- [patch] Bug with eslint where trailing commas were always expected in cases where none should have been expected.
+- [tests] Refactored some tests by cleaning up unused parameters and simplified return objects in some arrow functions.
