@@ -3,10 +3,10 @@ const fs = require('fs');
 class ConfigUtil {
 
   constructor() {
-    const credentialsPath = process.env.DOW_JONES_APPLICATION_CREDENTIALS;
+    const credentialsPath = process.env.DOW_JONES_JSON_CONFIG;
 
     if (!credentialsPath) {
-      throw new Error('Encountered problem getting environment variable \'DOW_JONES_APPLICATION_CREDENTIALS\'. Is it set?');
+      throw new Error('Encountered problem getting environment variable \'DOW_JONES_JSON_CONFIG\'. Is it set?');
     }
 
     try {
