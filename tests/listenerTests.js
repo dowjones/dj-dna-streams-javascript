@@ -17,7 +17,6 @@ describe('Given Listener object', () => {
 
   it('should use the expected sample user key', () => {
     expect(process.env.GCLOUD_PROJECT).not.toBeDefined();
-
     expect(configUtil.getUserKey()).toBe(expectedUserKey);
   });
 
@@ -26,13 +25,15 @@ describe('Given Listener object', () => {
 
     const pubSub = sandbox.stub(listener.gCloudProject, 'pubsub', () => {
       return {
-        subscription: (name) => {
+        subscription: () => {
           subscribeCalls += 1;
           return {
-            on: (event, cb) => {},
-            removeListener: (event, cb) => {}
-          }
-        },
+            get: () => Promise.resolve([{
+              on: () => 'foo',
+              removeListener: () => true
+            }])
+          };
+        }
       };
     });
 
@@ -50,28 +51,30 @@ describe('Given Listener object', () => {
     let subscribeCalls = 0;
     const pubSub = sandbox.stub(listener.gCloudProject, 'pubsub', () => {
       return {
-        subscription: (name) => {
+        subscription: () => {
           subscribeCalls += 1;
           return {
-            on: (event, cb) => {},
-            removeListener: (event, cb) => {}
-          }          
+            get: () => Promise.resolve([{
+              on: () => 'foo',
+              removeListener: () => true
+            }])
+          };
         }
       };
     });
 
     const subscriptions = [
       {
-        'name': 'foo',
-        'topic': 'foo'
-      },
-      { 
-        'name': 'bar',
-        'topic': 'bar'
+        name: 'foo',
+        topic: 'foo'
       },
       {
-        'name': 'banana',
-        'topic': 'banana'
+        name: 'bar',
+        topic: 'bar'
+      },
+      {
+        name: 'banana',
+        topic: 'banana'
       }
     ];
     listener.listen(null, subscriptions);

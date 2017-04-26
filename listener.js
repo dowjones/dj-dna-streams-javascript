@@ -23,18 +23,19 @@ class Listener {
    * This function allows you to listen to messages from a subscription.
    *
    * @param {subscriptionOnMessageCallback} onMessageCallback - The callback that handles the topic message when it arrives.
-   * @param {string[]=['ContentEventTranslated']} [subscriptions] - [Optional] collection of subscriptions you wish to listen to. Defaults to the subscriptions listed in your credentials security file. Leave as null or undefined if you
+   * @param {string[]=['ContentEventTranslated']} [subscriptions] - [Optional] collection of subscriptions you wish to listen to. Defaults to the subscriptions listed in your credentials security file.
+   * Leave as null or undefined if you
    * want to use the default.
    */
   listen(onMessageCallback, subscriptions) {
     const pubsubClient = this.gCloudProject.pubsub({ projectId: this.gCloudProjectName });
-    var subscriptions = subscriptions || this.defaultSubscriptions;
+    const subs = subscriptions || this.defaultSubscriptions;
 
-    if (!subscriptions || subscriptions.length <= 0) {
-      throw new Error('No subscriptions specified. Must specify subscriptions in credentials file or as parameters to this function')
-    } 
+    if (!subs || subs.length <= 0) {
+      throw new Error('No subscriptions specified. Must specify subscriptions in credentials file or as parameters to this function');
+    }
 
-    subscriptions.forEach((subscription) => {
+    subs.forEach((subscription) => {
       console.log(`Listening to subscription: ${subscription.name}`);
 
       const onMessage = (msg) => {
@@ -42,20 +43,20 @@ class Listener {
         return onMessageCallback(msg, subscription.topic);
       };
 
-      var pubsubSubscription = pubsubClient.subscription(subscription.name);
+      const pubsubSubscription = pubsubClient.subscription(subscription.name);
 
-      pubsubSubscription.get().then(function(data) {
-        var pubsubSubscription = data[0];
-        pubsubSubscription.on('message', onMessage);
-        pubsubSubscription.on('error', (subErr) => {
+      pubsubSubscription.get().then((data) => {
+        const pubsubSub = data[0];
+        pubsubSub.on('message', onMessage);
+        pubsubSub.on('error', (subErr) => {
           console.log(`On Subscription Error: ${subErr}`);
-          pubsubSubscription.removeListener('message', onMessage);
-          pubsubSubscription.on('message', onMessage);
+          pubsubSub.removeListener('message', onMessage);
+          pubsubSub.on('message', onMessage);
         });
-      }).then(function(err) {
+      }).catch((err) => {
         console.log(`Error retrieving subscription from Google PubSub: ${err}`);
       });
-    });  
+    });
 
     console.log('Listeners for subscriptions have been configured, set and await message arrival.');
   }
