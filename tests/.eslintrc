@@ -4,5 +4,10 @@
     "jasmine": true
   },
   "globals": {
+    "describe": true
+  },
+  "rules": {
+    "prefer-arrow-callback": ["off"],
+    "func-names": ["off"]
   }
 }

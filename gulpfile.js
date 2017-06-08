@@ -6,7 +6,7 @@ gulp.task('build', () => {
 });
 
 gulp.task('test', ['build'], () => {
-  gulp.src(['tests/**/*'], { read: true })
+  gulp.src(['tests/**/*.js'], { read: true })
     .pipe(jasmine());
 });
 

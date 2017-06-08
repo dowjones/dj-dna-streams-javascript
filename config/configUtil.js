@@ -1,41 +1,59 @@
-const fs = require('fs');
+const ConfigFileUtil = require('./ConfigFileUtil');
 
 class ConfigUtil {
 
   constructor() {
-    const credentialsPath = process.env.DOW_JONES_JSON_CONFIG;
-
-    if (!credentialsPath) {
-      throw new Error('Encountered problem getting environment variable \'DOW_JONES_JSON_CONFIG\'. Is it set?');
-    }
-
-    try {
-      fs.accessSync(credentialsPath, fs.constants.F_OK);
-    } catch (err) {
-      throw new Error(`Encountered error trying to find filename and location '${credentialsPath}'. A file with that name does not seem to exist at that location.`);
-    }
-
-    try {
-      fs.accessSync(credentialsPath, fs.constants.R_OK);
-    } catch (err) {
-      throw new Error(`Encountered a permission error when trying to read file '${credentialsPath}'.`);
-    }
-
-    const credentialsJson = fs.readFileSync(credentialsPath, 'utf8');
-    this.credentials = JSON.parse(credentialsJson);
+    this.Constants = {
+      SERVICE_ACCOUNT_ID: 'SERVICE_ACCOUNT_ID',
+      SUBSCRIPTION_IDS: 'SUBSCRIPTION_IDS',
+      CREDENTIALS_URI: 'CREDENTIALS_URI',
+      DEFAULT_CREDENTIALS_URI: 'https://extraction-api-dot-djsyndicationhub-prod.appspot.com/alpha/accounts/streaming-credentials'
+    };
   }
 
-  getUserKey() {
-    return this.credentials.dj_dna_streaming.user_key;
+  getServiceAccountId() {
+    this.serviceAccountId = null;
+
+    if (process.env[this.Constants.SERVICE_ACCOUNT_ID]) {
+      this.serviceAccountId = process.env[this.Constants.SERVICE_ACCOUNT_ID];
+    } else {
+      this.serviceAccountId = this.getConfigFileUtil().getServiceAccountId();
+    }
+
+    return this.serviceAccountId;
   }
 
-  getProjectName() {
-    const projectName = this.credentials.dj_dna_streaming.project_name;
-    return projectName || 'djsyndicationhub-prod';
+  getConfigFileUtil() {
+    if (!this.configFileUtil) {
+      this.configFileUtil = new ConfigFileUtil();
+    }
+
+    return this.configFileUtil;
   }
 
   getSubscriptions() {
-    return this.credentials.dj_dna_streaming.subscriptions;
+    let subscriptionIds = null;
+    if (process.env[this.Constants.SUBSCRIPTION_IDS]) {
+      const subIdsRaw = process.env[this.Constants.SUBSCRIPTION_IDS];
+
+      const subIds = subIdsRaw.split(',');
+      subscriptionIds = JSON.parse(`["${subIds.join('","')}"]`);
+    } else {
+      subscriptionIds = this.getConfigFileUtil().getSubscriptionIds();
+    }
+
+    return subscriptionIds;
+  }
+
+  getCredentialsUri() {
+    let credentialsUri = null;
+    if (process.env[this.Constants.CREDENTIALS_URI]) {
+      credentialsUri = process.env[this.Constants.CREDENTIALS_URI];
+    } else {
+      credentialsUri = this.Constants.DEFAULT_CREDENTIALS_URI;
+    }
+
+    return credentialsUri;
   }
 }
 
