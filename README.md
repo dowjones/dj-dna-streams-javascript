@@ -5,7 +5,7 @@ DNA Streaming Client - written in Javascript.
 
 #### Installing
 
-Install this at your project root by invoking the following command line:
+This project is an NPM module. That means it can be installed as a kind of library for your main project. To do this go to your main project's root. At the command line execute the following:
 
 ~~~~
 npm install git+https://git@github.dowjones.net/syndicationhub/dj-dna-streaming-javascript.git --save
@@ -17,46 +17,52 @@ npm install git+https://git@github.dowjones.net/syndicationhub/dj-dna-streaming-
 npm install --save dj-dna-streaming-javascript --registry http://registry.npm.wsjfdev.dowjones.net/
 ~~~~
 
+#### Configuring The App
+
+There are 2 ways to pass configuration variables to the app.* 
+
+Option 1. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your service account ID and your subscription ID(s). Remember that this file follows the JSON data format. Ensure your additions follow the JSON data format conventions.
+
+or
+
+Option 2. Set an environment variable. Setting one of the 2 environment variables listed below will override any other configuration setting for that value.
+
+  **SERVICE_ACCOUNT_ID**
+    This environment variable is intended to hold your Dow Jones provided service account ID.
+    
+  **SUBSCRIPTION_IDS**
+    This environment variable holds the command delimited list of subscription IDS. This value's required formatting is a not obvious. Here is a sample MacOS command line setting for illustration:
+    
+      export SUBCRIPTION_IDS="abcdefghi123, jklmnopqr456"
+      
+ NOTE: You may also pass subscription IDS using a function parameter. See the sample code below.
+
 #### Add Code to Listen to a DNA Subscription or Two:
 
 > var djDnaStreaming = require('dj-dna-streaming');
 >
-> var onMessageCallback = function(msg, topic) {
+> var onMessageCallback = function(msg) {
 >    console.log('One incoming message:' + JSON.stringify(msg.data));
->    console.log('Incoming message\'s topic: ' + topic);  
 > };
 >
 > djDnaStreaming.listen(onMessageCallback);
 
+If you wish to specify the subscription IDs in code (rather than configuration) use the following technique:
 
-#### Specifying Different Topics
+> var djDnaStreaming = require('dj-dna-streaming');
+>
+> var onMessageCallback = function(msg) {
+>    console.log('One incoming message:' + JSON.stringify(msg.data));
+> };
+>
+> var subscriptionIds = ['abcdefghi123', 'jklmnopqr456']; 
+>
+> djDnaStreaming.listen(onMessageCallback, subscriptionIds);
 
-The event subscriptions will default to those listed in the Dow Jones supplied credentials file. 
+#### Running the Demo Code
 
-However if you want to specify your own subscriptions you can. Add a 'subscriptions' argument to the subscribe function call like so:
+This modules comes with some demo code shipped. To execute the demo code, set your configuration, the execute the following:
 
-> var subscriptions = [{'name': 'someSubscription', 'topic': 'someTopic'];
-
-> djDnaStreaming.listen(onMessageCallback, subscriptions);
-
-
-#### Execute with Environment Variables
-
-When executing code that invokes this module ensure you have set the following environment variables -- DOW_JONES_JSON_CONFIG.
-
-Set this variable with the path to your Dow Jones json configuration file ('DowJonesDNA.json').
-
-###### Dow Jones Cloud Authentication
-
-This environment variable should hold the file path of your Dow Jones provided security json file ('DowJonesDNA.json').
-
-###### Example Execution Command (MacOS)
-
-````
-export DOW_JONES_JSON_CONFIG=./DowJonesDNA.json && node index.js
-````
-
-###### How To Test
-```
-npm test
-```
+~~~
+npm run demo
+~~~
