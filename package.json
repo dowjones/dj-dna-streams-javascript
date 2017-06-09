@@ -4,9 +4,9 @@
   "description": "Client to consume Dow Jones topic publishing events",
   "main": "index.js",
   "scripts": {
-    "start-demo": "export CREDENTIALS_URI=\"http://localhost:8080/alpha/accounts/streaming-credentials\" && node ./demo/index.js",
-    "test": "export DOW_JONES_JSON_CONFIG=./tests/sampleDowJonesApplicationCredentials.json && gulp test",
-    "test-cont": "export DOW_JONES_JSON_CONFIG=./tests/sampleDowJonesApplicationCredentials.json && gulp test-cont",
+    "test-demo": "export CREDENTIALS_URI=\"http://localhost:8080/alpha/accounts/streaming-credentials\" && node ./demo/index.js",
+    "test": "gulp test",
+    "test-cont": "gulp test-cont",
     "demo": "node ./demo/index.js"
   },
   "repository": {
@@ -19,7 +19,9 @@
     "google-cloud": "^0.44.0",
     "lodash": "^4.17.4",
     "request": "^2.81.0",
-    "request-promise": "^4.2.1"
+    "request-promise": "^4.2.1",
+    "gulp": "^3.9.1",
+    "gulp-jasmine": "^2.4.2"
   },
   "devDependencies": {
     "eslint": "^3.10.2",
@@ -27,8 +29,6 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
-    "gulp": "^3.9.1",
-    "gulp-jasmine": "^2.4.2",
     "sinon": "^1.17.6"
   }
 }
