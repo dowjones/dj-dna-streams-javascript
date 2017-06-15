@@ -1,9 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const sinon = require('sinon');
-const configUtil = require('../config/configUtil');
+const ConfigUtil = require('../config/ConfigUtil');
 
 describe('configUtil', () => {
   let sandbox;
+  const configUtil = new ConfigUtil();
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
@@ -47,5 +48,14 @@ describe('configUtil', () => {
 
     // Assert
     expect(expectedUri).toBe(credentialsUri);
+  });
+
+  it('should use the passed account ID.', () => {
+    // Arrange
+    // Act
+    const configUtilSpecial = new ConfigUtil('123');
+
+    // Assert
+    expect('123').toBe(configUtilSpecial.getServiceAccountId());
   });
 });

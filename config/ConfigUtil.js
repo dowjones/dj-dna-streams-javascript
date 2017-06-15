@@ -2,7 +2,8 @@ const ConfigFileUtil = require('./ConfigFileUtil');
 
 class ConfigUtil {
 
-  constructor() {
+  constructor(accountId) {
+    this.accountId = accountId;
     this.Constants = {
       SERVICE_ACCOUNT_ID: 'SERVICE_ACCOUNT_ID',
       SUBSCRIPTION_IDS: 'SUBSCRIPTION_IDS',
@@ -12,15 +13,17 @@ class ConfigUtil {
   }
 
   getServiceAccountId() {
-    this.serviceAccountId = null;
-
-    if (process.env[this.Constants.SERVICE_ACCOUNT_ID]) {
-      this.serviceAccountId = process.env[this.Constants.SERVICE_ACCOUNT_ID];
-    } else {
-      this.serviceAccountId = this.getConfigFileUtil().getServiceAccountId();
+    if (this.accountId) {
+      return this.accountId;
     }
 
-    return this.serviceAccountId;
+    if (process.env[this.Constants.SERVICE_ACCOUNT_ID]) {
+      this.accountId = process.env[this.Constants.SERVICE_ACCOUNT_ID];
+    } else {
+      this.accountId = this.getConfigFileUtil().getServiceAccountId();
+    }
+
+    return this.accountId;
   }
 
   getConfigFileUtil() {
@@ -57,4 +60,4 @@ class ConfigUtil {
   }
 }
 
-module.exports = new ConfigUtil();
+module.exports = ConfigUtil;

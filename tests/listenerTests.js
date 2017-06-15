@@ -1,5 +1,5 @@
 const sinon = require('sinon');
-const listener = require('../listener');
+const Listener = require('../Listener');
 
 describe('Given Listener object', () => {
   let sandbox;
@@ -9,6 +9,7 @@ describe('Given Listener object', () => {
   const expectedSubIds = ['bar', 'banana'];
   let getCredentialsStub = null;
   let getConfigUtilStub = null;
+  const listener = new Listener();
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
@@ -23,7 +24,6 @@ describe('Given Listener object', () => {
     pubSub = sandbox.stub(listener, 'getPubSubClient', function () {
       return {
         subscription: () => {
-          console.log('Called sub');
           subscribeCalls += 1;
           return {
             get: () => Promise.resolve([{
@@ -35,12 +35,8 @@ describe('Given Listener object', () => {
       };
     });
 
-    getConfigUtilStub = sandbox.stub(listener, 'getConfigUtil', function () {
-      return {
-        getSubscriptions: () => {
-          return expectedSubIds;
-        }
-      };
+    getConfigUtilStub = sandbox.stub(listener.configUtil, 'getSubscriptions', function () {
+      return expectedSubIds;
     });
   });
 
@@ -50,12 +46,16 @@ describe('Given Listener object', () => {
   });
 
   it('listening should succeed with default subscriptions.', (done) => {
+
+    // Arrange
     expect(listener).toBeDefined();
 
     // NOTE: 11-18-2016: fleschec: No need to provide a first argument 'onMessageCallback' since we are mocking
     // the test in such a way that no messages will ever be returned.
+    // Act
     const promise = listener.listen(null);
 
+    // Assert
     promise.then(() => {
       expect(getConfigUtilStub.calledOnce).toBe(true);
       expect(getCredentialsStub.calledOnce).toBe(true);
