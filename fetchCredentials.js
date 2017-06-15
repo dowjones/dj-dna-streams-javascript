@@ -1,7 +1,6 @@
 const request = require('request-promise');
-const configUtil = require('./config/configUtil');
 
-const credentialsFetcher = () => {
+const fetchCredentials = (configUtil) => {
 
   const options = {
     method: 'GET',
@@ -25,4 +24,4 @@ const credentialsFetcher = () => {
     });
 };
 
-module.exports = credentialsFetcher;
+module.exports = fetchCredentials;

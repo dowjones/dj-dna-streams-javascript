@@ -1,14 +1,20 @@
 const googleCloud = require('google-cloud');
-const configUtil = require('./config/configUtil');
+const ConfigUtil = require('./config/ConfigUtil');
 const fetchCredentials = require('./fetchCredentials');
 
 /** Class that allows you to listen to a number of Dow Jones PubSub subscriptions. This is a singleton. */
 class Listener {
 
+  constructor(accountId) {
+    this.accountId = accountId;
+    this.configUtil = new ConfigUtil(accountId);
+  }
+
+
   initialize(credentials) {
     this.gCloudProject = googleCloud({ project_id: credentials.project_id, credentials });
     this.project_id = credentials.project_id;
-    this.defaultSubscriptions = this.getConfigUtil().getSubscriptions();
+    this.defaultSubscriptions = this.configUtil.getSubscriptions();
   }
 
   /**
@@ -28,7 +34,7 @@ class Listener {
    * want to use the default.
    */
   listen(onMessageCallback, subscriptions) {
-    return this.getCredentials().then((credentials) => {
+    return this.getCredentials(this.configUtil).then((credentials) => {
       this.initialize(credentials);
       this.readyListener(onMessageCallback, subscriptions);
       return true;
@@ -38,12 +44,8 @@ class Listener {
     });
   }
 
-  getConfigUtil() {
-    return configUtil;
-  }
-
   getCredentials() {
-    return fetchCredentials();
+    return fetchCredentials(this.configUtil);
   }
 
   getPubSubClient() {
@@ -84,4 +86,4 @@ class Listener {
   }
 }
 
-module.exports = new Listener();
+module.exports = Listener;

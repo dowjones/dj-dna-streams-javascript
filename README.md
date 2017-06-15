@@ -21,7 +21,7 @@ npm install --save dj-dna-streaming-javascript --registry http://registry.npm.ws
 
 There are 2 ways to pass configuration variables to the app.* 
 
-Option 1. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your service account ID and your subscription ID(s). Remember that this file follows the JSON data format. Ensure your additions follow the JSON data format conventions.
+Option 1. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your service account ID and your subscription ID(s). Ensure your additions follow the JSON data format conventions.
 
 or
 
