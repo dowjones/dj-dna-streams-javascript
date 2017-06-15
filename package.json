@@ -4,7 +4,6 @@
   "description": "Client to consume Dow Jones topic publishing events",
   "main": "index.js",
   "scripts": {
-    "test-demo": "export CREDENTIALS_URI=\"http://localhost:8080/alpha/accounts/streaming-credentials\" && node ./demo/index.js",
     "test": "gulp test",
     "test-cont": "gulp test-cont",
     "demo": "node ./demo/index.js"
