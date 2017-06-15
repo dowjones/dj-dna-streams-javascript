@@ -5,7 +5,7 @@ DNA Streaming Client - written in Javascript.
 
 #### Installing
 
-Install this at your project root by invoking the following command line:
+This project is an NPM module. That means it can be installed as a kind of library for your main project. To do this go to your main project's root. At the command line execute the following:
 
 ~~~~
 npm install git+https://git@github.dowjones.net/syndicationhub/dj-dna-streaming-javascript.git --save
@@ -17,46 +17,69 @@ npm install git+https://git@github.dowjones.net/syndicationhub/dj-dna-streaming-
 npm install --save dj-dna-streaming-javascript --registry http://registry.npm.wsjfdev.dowjones.net/
 ~~~~
 
-#### Add Code to Listen to a DNA Subscription or Two:
+#### Configuring The App
 
-> var djDnaStreaming = require('dj-dna-streaming');
+There are three ways to pass configuration variables to the app.  
+
+Option 1. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your service account ID and your subscription ID(s). Ensure your additions follow the JSON data format conventions.
+
+or
+
+Option 2. Set an environment variable. Setting one of the 2 environment variables listed below will override any other configuration setting for that value.
+
+  **SERVICE_ACCOUNT_ID**
+    This environment variable is intended to hold your Dow Jones provided service account ID. This will override any setting in your config file.
+    
+  **SUBSCRIPTION_IDS**
+    This environment variable holds the command delimited list of subscription IDS. This value's required formatting is a not obvious. Here is a sample MacOS command line setting for illustration:
+    
+      export SUBCRIPTION_IDS="abcdefghi123, jklmnopqr456"
+      
+
+Option 3: Passing values as function arguments. Specifically you can pass either the service account ID or subscription IDs. When you start a listener you can pass the service account ID to the Listener constructor like so:
+
+> var Listener = require('Listener');
 >
-> var onMessageCallback = function(msg, topic) {
+> var onMessageCallback = function(msg) {
 >    console.log('One incoming message:' + JSON.stringify(msg.data));
->    console.log('Incoming message\'s topic: ' + topic);  
 > };
 >
-> djDnaStreaming.listen(onMessageCallback);
+> const listener = new Listener("<YOUR ACCOUNT ID HERE>");
+> listener.listen(onMessageCallback);
+
+This will override both the environmental variable and the configuration file service account ID setting.
+
+If you want to pass the subscription IDs via function arguments, take a look at the following code:
+
+> var Listener = require('Listener');
+>
+> var onMessageCallback = function(msg) {
+>    console.log('One incoming message:' + JSON.stringify(msg.data));
+> };
+>
+> var subscriptionIds = ['abcdefghi123', 'jklmnopqr456']; 
+>
+> const listener = new Listener();
+> listener.listen(onMessageCallback, subscriptionIds);
 
 
-#### Specifying Different Topics
+#### Running the Demo Code
 
-The event subscriptions will default to those listed in the Dow Jones supplied credentials file. 
+This modules comes with some demo code shipped. To execute the demo code, set your configuration, the execute the following:
 
-However if you want to specify your own subscriptions you can. Add a 'subscriptions' argument to the subscribe function call like so:
+~~~
+npm run demo
+~~~
 
-> var subscriptions = [{'name': 'someSubscription', 'topic': 'someTopic'];
+#### Writing Your Own Code
 
-> djDnaStreaming.listen(onMessageCallback, subscriptions);
+The following is some very basic code. Use it to listen to a DNA subscription. It assumes you have set the correct values in the configuration file or have set the correct environment variables (see the Configuring The App section).
 
-
-#### Execute with Environment Variables
-
-When executing code that invokes this module ensure you have set the following environment variables -- DOW_JONES_JSON_CONFIG.
-
-Set this variable with the path to your Dow Jones json configuration file ('DowJonesDNA.json').
-
-###### Dow Jones Cloud Authentication
-
-This environment variable should hold the file path of your Dow Jones provided security json file ('DowJonesDNA.json').
-
-###### Example Execution Command (MacOS)
-
-````
-export DOW_JONES_JSON_CONFIG=./DowJonesDNA.json && node index.js
-````
-
-###### How To Test
-```
-npm test
-```
+> var Listener = require('Listener');
+>
+> var onMessageCallback = function(msg) {
+>    console.log('One incoming message:' + JSON.stringify(msg.data));
+> };
+>
+> const listener = new Listener();
+> listener.listen(onMessageCallback);
