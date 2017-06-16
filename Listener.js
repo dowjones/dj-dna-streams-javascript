@@ -13,7 +13,7 @@ class Listener {
 
   initialize(credentials) {
     this.gCloudProject = googleCloud({ project_id: credentials.project_id, credentials });
-    this.project_id = credentials.project_id;
+    this.projectId = credentials.project_id;
     this.defaultSubscriptions = this.configUtil.getSubscriptions();
   }
 
@@ -49,7 +49,7 @@ class Listener {
   }
 
   getPubSubClient() {
-    return this.gCloudProject.pubsub({ projectId: this.project_id });
+    return this.gCloudProject.pubsub({ projectId: this.projectId });
   }
 
   readyListener(onMessageCallback, subscriptionIds) {
@@ -61,14 +61,16 @@ class Listener {
     }
 
     subs.forEach((subscription) => {
-      console.log(`Listening to subscription: ${subscription}`);
+      const subscriptionFullName = `projects/${this.projectId}/subscriptions/${subscription}`;
+
+      console.log(`Listening to subscription: ${subscriptionFullName}`);
 
       const onMessage = (msg) => {
         msg.skip();
         return onMessageCallback(msg);
       };
 
-      const pubsubSubscription = pubsubClient.subscription(subscription);
+      const pubsubSubscription = pubsubClient.subscription(subscriptionFullName);
 
       pubsubSubscription.get().then((data) => {
         const pubsubSub = data[0];
