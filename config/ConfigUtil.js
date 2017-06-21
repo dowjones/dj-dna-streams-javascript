@@ -8,7 +8,7 @@ class ConfigUtil {
       SERVICE_ACCOUNT_ID: 'SERVICE_ACCOUNT_ID',
       SUBSCRIPTION_IDS: 'SUBSCRIPTION_IDS',
       CREDENTIALS_URI: 'CREDENTIALS_URI',
-      DEFAULT_CREDENTIALS_URI: 'https://extraction-api-dot-djsyndicationhub-prod.appspot.com/alpha/accounts/streaming-credentials'
+      DEFAULT_CREDENTIALS_URI: 'https://api.dowjones.com/alpha/accounts/streaming-credentials'
     };
   }
 
