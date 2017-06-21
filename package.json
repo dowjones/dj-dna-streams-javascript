@@ -1,7 +1,7 @@
 {
   "name": "dj-dna-streaming-javascript",
-  "version": "0.2.2",
-  "description": "Client to consume Dow Jones topic publishing events",
+  "version": "1.0.0",
+  "description": "Client to consume Dow Jones DNA subscription events",
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.dowjones.net/syndicationhub/dj-dna-streaming-javascript.git"
+    "url": "https://github.com/dowjones/syndicationhub/dj-dna-streaming-javascript.git"
   },
   "author": "Dow Jones",
   "license": "UNLICENSED",

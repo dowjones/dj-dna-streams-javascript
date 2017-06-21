@@ -8,13 +8,13 @@ DNA Streaming Client - written in Javascript.
 This project is an NPM module. That means it can be installed as a kind of library for your main project. To do this go to your main project's root. At the command line execute the following:
 
 ~~~~
-npm install git+https://git@github.dowjones.net/syndicationhub/dj-dna-streaming-javascript.git --save
+npm install git+https://git@github.com/dowjones/syndicationhub/dj-dna-streaming-javascript.git --save
 ~~~~
  
  or 
 
 ~~~~
-npm install --save dj-dna-streaming-javascript --registry http://registry.npm.wsjfdev.dowjones.net/
+npm install --save dj-dna-streaming-javascript
 ~~~~
 
 #### Configuring The App
@@ -71,9 +71,29 @@ This modules comes with some demo code shipped. To execute the demo code, set yo
 npm run demo
 ~~~
 
+##### Docker Demo
+
+To execute the demo code in a Docker container, perform the following steps.
+
+Step 1: Build the docker image. Execute the following command line:
+
+~~~
+  docker build -f ./DockerfileDemo -t dj-dna-streaming-javascript .
+~~~
+  
+Step 2: Run the docker image
+
+~~~
+docker run -it \
+-e SERVICE_ACCOUNT_ID="<your service account ID" \
+-e SUBSCRIPTION_IDS="<your subscription ID>" \
+dj-dna-streaming-javascript
+~~~
+
+
 #### Writing Your Own Code
 
-The following is some very basic code. Use it to listen to a DNA subscription. It assumes you have set the correct values in the configuration file or have set the correct environment variables (see the Configuring The App section).
+The following is some very basic code. Use it to listen to a DNA subscription. It assumes you have set the correct values in the configuration file or have set the correct environment variables (see the *Configuring The App* section above).
 
 > var Listener = require('Listener');
 >
