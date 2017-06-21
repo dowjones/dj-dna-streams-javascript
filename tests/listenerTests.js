@@ -1,82 +1,79 @@
 const sinon = require('sinon');
-const listener = require('../listener');
-const configUtil = require('../config/configUtil');
+const Listener = require('../Listener');
 
 describe('Given Listener object', () => {
   let sandbox;
-  const expectedUserKey = 'cool-guy';
+  const expectedUserKey = 'Lemon';
+  let pubSub;
+  let subscribeCalls = 0;
+  const expectedSubIds = ['bar', 'banana'];
+  let getCredentialsStub = null;
+  let getConfigUtilStub = null;
+  const listener = new Listener();
 
-  beforeEach(() => {
+  beforeEach(function () {
     sandbox = sinon.sandbox.create();
     process.env.USER_KEY = expectedUserKey;
-  });
 
-  afterEach(() => {
-    sandbox.restore();
-  });
-
-  it('should use the expected sample user key', () => {
-    expect(process.env.GCLOUD_PROJECT).not.toBeDefined();
-
-    expect(configUtil.getUserKey()).toBe(expectedUserKey);
-  });
-
-  it('listening should succeed with default subscriptions.', () => {
-    let subscribeCalls = 0;
-
-    const pubSub = sandbox.stub(listener.gCloudProject, 'pubsub', () => {
-      return {
-        subscription: (name) => {
-          subscribeCalls += 1;
-          return {
-            on: (event, cb) => {},
-            removeListener: (event, cb) => {}
-          }
-        },
-      };
+    getCredentialsStub = sandbox.stub(listener, 'getCredentials', () => {
+      return Promise.resolve({
+        project_id: 'foo'
+      });
     });
 
-    expect(listener).toBeDefined();
-
-    // NOTE: 11-18-2016: fleschec: No need to provide a first argument 'onMessageCallback' since we are mocking
-    // the test in such a way that no messages will ever be returned.
-    listener.listen(null);
-
-    expect(pubSub.calledOnce).toBe(true);
-    expect(subscribeCalls).toBe(2);
-  });
-
-  it('listening should succeed with subscriptions input as args.', () => {
-    let subscribeCalls = 0;
-    const pubSub = sandbox.stub(listener.gCloudProject, 'pubsub', () => {
+    pubSub = sandbox.stub(listener, 'getPubSubClient', function () {
       return {
-        subscription: (name) => {
+        subscription: () => {
           subscribeCalls += 1;
           return {
-            on: (event, cb) => {},
-            removeListener: (event, cb) => {}
-          }          
+            get: () => Promise.resolve([{
+              on: (resultType, fn) => {
+              }
+            }])
+          };
         }
       };
     });
 
-    const subscriptions = [
-      {
-        'name': 'foo',
-        'topic': 'foo'
-      },
-      { 
-        'name': 'bar',
-        'topic': 'bar'
-      },
-      {
-        'name': 'banana',
-        'topic': 'banana'
-      }
-    ];
-    listener.listen(null, subscriptions);
+    getConfigUtilStub = sandbox.stub(listener.configUtil, 'getSubscriptions', function () {
+      return expectedSubIds;
+    });
+  });
 
-    expect(pubSub.calledOnce).toBe(true);
-    expect(subscribeCalls).toBe(3);
+  afterEach(function () {
+    sandbox.restore();
+    subscribeCalls = 0;
+  });
+
+  it('listening should succeed with default subscriptions.', (done) => {
+
+    // Arrange
+    expect(listener).toBeDefined();
+
+    // NOTE: 11-18-2016: fleschec: No need to provide a first argument 'onMessageCallback' since we are mocking
+    // the test in such a way that no messages will ever be returned.
+    // Act
+    const promise = listener.listen(null);
+
+    // Assert
+    promise.then(() => {
+      expect(getConfigUtilStub.calledOnce).toBe(true);
+      expect(getCredentialsStub.calledOnce).toBe(true);
+      expect(pubSub.calledOnce).toBe(true);
+      expect(expectedSubIds.length).toBe(subscribeCalls);
+      done();
+    });
+  });
+
+  it('listening should succeed with subscriptions input as args.', (done) => {
+    const subscriptions = ['foo', 'bar', 'banana', 'dragonFruit'];
+    const promise = listener.listen(null, subscriptions);
+
+    promise.then((result) => {
+      expect(result).toBe(true);
+      expect(pubSub.calledOnce).toBe(true);
+      expect(subscriptions.length).toBe(subscribeCalls);
+      done();
+    });
   });
 });

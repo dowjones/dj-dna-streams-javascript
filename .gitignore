@@ -1,3 +1,5 @@
 ./logs/*
 .idea
 node_modules
+/DowJonesDNA.json
+/r-d.sh
