@@ -11,6 +11,9 @@ const fetchCredentials = (configUtil) => {
     json: false
   };
 
+  // TODO: 06-21-2017: fleschec: Remove this when 3Scale fixes their cert problems with https://api.beta.dowjones.io/
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
   return request(options)
     .then((response) => {
       const result = JSON.parse(response);
