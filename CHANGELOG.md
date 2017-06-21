@@ -54,3 +54,30 @@
 - [breaking] Changed name of 'subscriber.js' to 'listener.js', and main function name of module from 'subscribe' to 'listen'
 - [breaking] Look for subscriptions as objects with 'name' and 'topic' fields in credentials file instead of just topics
 - [docs] Updated README.md
+
+0.2.O / 2017-04-25
+==================
+- [docs] Updated README.md
+- [breaking] Changed name of expected Dow Jones JSON config file from 'dowJonesApplicationCredentials.json' to 'DowJonesDNA.json'
+- [breaking] Changed environmental variable from 'DOW_JONES_APPLICATION_CREDENTIALS' to 'DOW_JONES_JSON_CONFIG'.
+- [tests] Updated tests
+
+0.2.1 / 2017-04-25
+==================
+- [patch] Fixed bug where getting incorrect message 'Error retrieving subscription from Google PubSub: undefined'.
+
+0.2.2 / 2017-04-26
+==================
+- [patch] Bug with eslint where trailing commas were always expected in cases where none should have been expected.
+- [tests] Refactored some tests by cleaning up unused parameters and simplified return objects in some arrow functions.
+
+1.0.0 / 2017-06-09
+==================
+- [breaking] App no longer requires 'DOW_JONES_JSON_CONFIG' credentials/config file. Instead customer just needs to set the service account ID and subscription ID(s) in config. See README.md.
+- [tests] Updated and added tests.
+- [breaking] Removed topic from message callback because the value did not come from the service response. Instead it came from the user's own configuration setting. So this setting provided almost no useful contextual information for the user. Worse yet it could be confusing. So ... removed for clarity.
+- [deps] Added lodash, request, and request-promise.
+- [patch] Added demo code. See README.md.
+- [patch] Added call to 'https://extraction-api-dot-djsyndicationhub-prod.appspot.com/alpha/accounts/streaming-credentials' when listener method invoked. This will download the user credentials. Previous to this version, the credentials were stored in a local config.
+- [breaking] Listener must now be constructed. User now has option to pass in account_ID to listener constructor. Otherwise environment variable is used. If environment variable is not set, then customerConfig.json is consulted.
+- [docs] Updated README.md.
