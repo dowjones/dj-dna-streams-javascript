@@ -30,10 +30,8 @@ Option 2. Set an environment variable. Setting one of the 2 environment variable
   **SERVICE_ACCOUNT_ID**
     This environment variable is intended to hold your Dow Jones provided service account ID. This will override any setting in your config file.
     
-  **SUBSCRIPTION_IDS**
-    This environment variable holds the command delimited list of subscription IDS. This value's required formatting is a not obvious. Here is a sample MacOS command line setting for illustration:
-    
-      export SUBCRIPTION_IDS="abcdefghi123, jklmnopqr456"
+  **SUBSCRIPTION_ID**
+    This environment variable holds the subscription ID.
       
 
 Option 3: Passing values as function arguments. Specifically you can pass either the service account ID or subscription IDs. When you start a listener you can pass the service account ID to the Listener constructor like so:
@@ -57,10 +55,10 @@ If you want to pass the subscription IDs via function arguments, take a look at 
 >    console.log('One incoming message:' + JSON.stringify(msg.data));
 > };
 >
-> var subscriptionIds = ['abcdefghi123', 'jklmnopqr456']; 
+> var subscriptionId = 'abcdefghi123'; 
 >
 > const listener = new Listener();
-> listener.listen(onMessageCallback, subscriptionIds);
+> listener.listen(onMessageCallback, subscriptionId);
 
 
 #### Running the Demo Code
