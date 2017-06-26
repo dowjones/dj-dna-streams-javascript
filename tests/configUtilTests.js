@@ -27,15 +27,13 @@ describe('configUtil', () => {
 
   it('should get the correct subscription IDs.', () => {
     // Arrange
-    process.env[configUtil.Constants.SUBSCRIPTION_IDS] = 'ABC, DEF';
+    process.env[configUtil.Constants.SUBSCRIPTION_ID] = 'ABC';
 
     // Act
-    const subs = configUtil.getSubscriptions();
+    const sub = configUtil.getSubscriptionId();
 
     // Assert
-    expect(2).toBe(subs.length);
-    expect(subs[0] = 'ABC');
-    expect(subs[1] = 'DEF');
+    expect(sub).toBe('ABC');
   });
 
   it('should get the correct credentials URI.', () => {

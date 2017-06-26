@@ -86,7 +86,7 @@ Step 2: Run the docker image
 ~~~
 docker run -it \
 -e SERVICE_ACCOUNT_ID="<your service account ID" \
--e SUBSCRIPTION_IDS="<your subscription ID>" \
+-e SUBSCRIPTION_ID="<your subscription ID>" \
 dj-dna-streaming-javascript
 ~~~
 

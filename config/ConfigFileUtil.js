@@ -34,11 +34,11 @@ class ConfigFileUtil {
     this.initialize();
   }
 
-  getSubscriptionIds() {
+  getSubscriptionId() {
     if (!this.initialized) {
       this.initialize();
     }
-    return this.config.subscription_ids;
+    return this.config.subscription_id;
   }
 
   getServiceAccountId() {

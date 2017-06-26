@@ -14,7 +14,7 @@ class Listener {
   initialize(credentials) {
     this.gCloudProject = googleCloud({ project_id: credentials.project_id, credentials });
     this.projectId = credentials.project_id;
-    this.defaultSubscriptions = this.configUtil.getSubscriptions();
+    this.defaultSubscriptionId = this.configUtil.getSubscriptionId();
   }
 
   /**
@@ -33,10 +33,10 @@ class Listener {
    * Leave as null or undefined if you
    * want to use the default.
    */
-  listen(onMessageCallback, subscriptions) {
+  listen(onMessageCallback, subscription) {
     return this.getCredentials(this.configUtil).then((credentials) => {
       this.initialize(credentials);
-      this.readyListener(onMessageCallback, subscriptions);
+      this.readyListener(onMessageCallback, subscription);
       return true;
     }).catch((err) => {
       console.log(`Encountered an error attempting to get cloud credentials on behalf of customer: ${err.message}`);
@@ -52,38 +52,37 @@ class Listener {
     return this.gCloudProject.pubsub({ projectId: this.projectId });
   }
 
-  readyListener(onMessageCallback, subscriptionIds) {
+  readyListener(onMessageCallback, subscriptionId) {
     const pubsubClient = this.getPubSubClient();
-    const subs = subscriptionIds || this.defaultSubscriptions;
+    const sub = subscriptionId || this.defaultSubscriptionId;
 
-    if (!subs || subs.length <= 0) {
+    if (!sub || sub.length <= 0) {
       throw new Error('No subscriptions specified. You must specify subscriptions when calling the \'listen\' function.');
     }
 
-    subs.forEach((subscription) => {
-      const subscriptionFullName = `projects/${this.projectId}/subscriptions/${subscription}`;
+    const subscriptionFullName = `projects/${this.projectId}/subscriptions/${sub}`;
 
-      console.log(`Listening to subscription: ${subscriptionFullName}`);
+    console.log(`Listening to subscription: ${subscriptionFullName}`);
 
-      const onMessage = (msg) => {
-        msg.skip();
-        return onMessageCallback(msg);
-      };
+    const onMessage = (msg) => {
+      msg.skip();
+      return onMessageCallback(msg);
+    };
 
-      const pubsubSubscription = pubsubClient.subscription(subscriptionFullName);
+    const pubsubSubscription = pubsubClient.subscription(subscriptionFullName);
 
-      pubsubSubscription.get().then((data) => {
-        const pubsubSub = data[0];
+    pubsubSubscription.get().then((data) => {
+      const pubsubSub = data[0];
+      pubsubSub.on('message', onMessage);
+      pubsubSub.on('error', (subErr) => {
+        console.log(`On Subscription Error: ${subErr}`);
+        pubsubSub.removeListener('message', onMessage);
         pubsubSub.on('message', onMessage);
-        pubsubSub.on('error', (subErr) => {
-          console.log(`On Subscription Error: ${subErr}`);
-          pubsubSub.removeListener('message', onMessage);
-          pubsubSub.on('message', onMessage);
-        });
-      }).catch((err) => {
-        console.log(`Error retrieving subscription from Google PubSub: ${err}`);
       });
+    }).catch((err) => {
+      console.log(`Error retrieving subscription from Google PubSub: ${err}`);
     });
+
     console.log('Listeners for subscriptions have been configured, set and await message arrival.');
   }
 }

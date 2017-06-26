@@ -81,3 +81,9 @@
 - [patch] Added call to 'https://extraction-api-dot-djsyndicationhub-prod.appspot.com/alpha/accounts/streaming-credentials' when listener method invoked. This will download the user credentials. Previous to this version, the credentials were stored in a local config.
 - [breaking] Listener must now be constructed. User now has option to pass in account_ID to listener constructor. Otherwise environment variable is used. If environment variable is not set, then customerConfig.json is consulted.
 - [docs] Updated README.md.
+
+1.0.1 / 2017-06-09
+==================
+- [breaking] Removed abililty to consume more than one stream at a time.
+- [tests] Updated tests.
+- [docs] Update README.
