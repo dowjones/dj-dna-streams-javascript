@@ -6,7 +6,7 @@ class ConfigUtil {
     this.accountId = accountId;
     this.Constants = {
       SERVICE_ACCOUNT_ID: 'SERVICE_ACCOUNT_ID',
-      SUBSCRIPTION_IDS: 'SUBSCRIPTION_IDS',
+      SUBSCRIPTION_ID: 'SUBSCRIPTION_IDS',
       CREDENTIALS_URI: 'CREDENTIALS_URI',
       DEFAULT_CREDENTIALS_URI: 'https://api.beta.dowjones.io/alpha/accounts/streaming-credentials'
     };
@@ -34,18 +34,15 @@ class ConfigUtil {
     return this.configFileUtil;
   }
 
-  getSubscriptions() {
-    let subscriptionIds = null;
-    if (process.env[this.Constants.SUBSCRIPTION_IDS]) {
-      const subIdsRaw = process.env[this.Constants.SUBSCRIPTION_IDS];
-
-      const subIds = subIdsRaw.split(',');
-      subscriptionIds = JSON.parse(`["${subIds.join('","')}"]`);
+  getSubscriptionId() {
+    let subscriptionId = null;
+    if (process.env[this.Constants.SUBSCRIPTION_ID]) {
+      subscriptionId = process.env[this.Constants.SUBSCRIPTION_ID];
     } else {
-      subscriptionIds = this.getConfigFileUtil().getSubscriptionIds();
+      subscriptionId = this.getConfigFileUtil().getSubscriptionId();
     }
 
-    return subscriptionIds;
+    return subscriptionId;
   }
 
   getCredentialsUri() {
