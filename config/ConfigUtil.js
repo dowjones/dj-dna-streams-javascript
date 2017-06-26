@@ -6,7 +6,7 @@ class ConfigUtil {
     this.accountId = accountId;
     this.Constants = {
       SERVICE_ACCOUNT_ID: 'SERVICE_ACCOUNT_ID',
-      SUBSCRIPTION_ID: 'SUBSCRIPTION_IDS',
+      SUBSCRIPTION_ID: 'SUBSCRIPTION_ID',
       CREDENTIALS_URI: 'CREDENTIALS_URI',
       DEFAULT_CREDENTIALS_URI: 'https://api.beta.dowjones.io/alpha/accounts/streaming-credentials'
     };
