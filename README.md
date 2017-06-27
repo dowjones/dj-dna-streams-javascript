@@ -21,7 +21,7 @@ npm install --save dj-dna-streaming-javascript
 
 There are three ways to pass configuration variables to the app.  
 
-Option 1. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your service account ID and your subscription ID(s). Ensure your additions follow the JSON data format conventions.
+Option 1. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your service account ID and your subscription ID. Ensure your additions follow the JSON data format conventions.
 
 or
 
@@ -30,13 +30,11 @@ Option 2. Set an environment variable. Setting one of the 2 environment variable
   **SERVICE_ACCOUNT_ID**
     This environment variable is intended to hold your Dow Jones provided service account ID. This will override any setting in your config file.
     
-  **SUBSCRIPTION_IDS**
-    This environment variable holds the command delimited list of subscription IDS. This value's required formatting is a not obvious. Here is a sample MacOS command line setting for illustration:
-    
-      export SUBCRIPTION_IDS="abcdefghi123, jklmnopqr456"
+  **SUBSCRIPTION_ID**
+    This environment variable holds the subscription ID.
       
 
-Option 3: Passing values as function arguments. Specifically you can pass either the service account ID or subscription IDs. When you start a listener you can pass the service account ID to the Listener constructor like so:
+Option 3: Passing values as function arguments. Specifically you can pass either the service account ID and/or subscription ID. When you start a listener you can pass the service account ID to the Listener constructor like so:
 
 > var Listener = require('Listener');
 >
@@ -49,7 +47,7 @@ Option 3: Passing values as function arguments. Specifically you can pass either
 
 This will override both the environmental variable and the configuration file service account ID setting.
 
-If you want to pass the subscription IDs via function arguments, take a look at the following code:
+If you want to pass the subscription ID via function arguments, take a look at the following code:
 
 > var Listener = require('Listener');
 >
@@ -57,15 +55,15 @@ If you want to pass the subscription IDs via function arguments, take a look at 
 >    console.log('One incoming message:' + JSON.stringify(msg.data));
 > };
 >
-> var subscriptionIds = ['abcdefghi123', 'jklmnopqr456']; 
+> var subscriptionId = 'abcdefghi123'; 
 >
 > const listener = new Listener();
-> listener.listen(onMessageCallback, subscriptionIds);
+> listener.listen(onMessageCallback, subscriptionId);
 
 
 #### Running the Demo Code
 
-This modules comes with some demo code shipped. To execute the demo code, set your configuration, the execute the following:
+This modules comes with demonstration code. To execute the demo code, configure your app (See _Configuring the App_ section above). Then execute the following:
 
 ~~~
 npm run demo
@@ -86,14 +84,14 @@ Step 2: Run the docker image
 ~~~
 docker run -it \
 -e SERVICE_ACCOUNT_ID="<your service account ID" \
--e SUBSCRIPTION_IDS="<your subscription ID>" \
+-e SUBSCRIPTION_ID="<your subscription ID>" \
 dj-dna-streaming-javascript
 ~~~
 
 
 #### Writing Your Own Code
 
-The following is some very basic code. Use it to listen to a DNA subscription. It assumes you have set the correct values in the configuration file or have set the correct environment variables (see the *Configuring The App* section above).
+The following is some very basic code. Use it to listen to a DNA subscription. It assumes you have configured the app correct. (See the *Configuring The App* section above).
 
 > var Listener = require('Listener');
 >

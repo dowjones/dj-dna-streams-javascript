@@ -28,17 +28,16 @@ describe('configUtil', () => {
     expect(serviceAccountId).toBe('foo');
   });
 
-  it('should get the correct subscription IDs.', () => {
+  it('should get the correct subscription ID.', () => {
     // Arrange
     const configFileUtil = new ConfigFileUtil();
     configFileUtil.setConfigFilePath(pathConfig);
 
     // Act
-    const subs = configFileUtil.getSubscriptionIds();
+    const sub = configFileUtil.getSubscriptionId();
 
     // Assert
-    expect(1).toBe(subs.length);
-    expect(subs[0] = 'bar');
+    expect(sub).toBe('bar');
   });
 
   xit('should get the correct credentials URI.', () => {
