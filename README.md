@@ -11,7 +11,7 @@ This project is an NPM module. That means it can be installed as a kind of libra
 npm install git+https://git@github.com/dowjones/dj-dna-streams-javascript.git --save
 ~~~~
 
-Alternatively you can simply check out this project from git.
+Alternatively you can simply check out this project from Git.
 
 
 #### Configuring The App
