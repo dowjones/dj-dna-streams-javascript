@@ -6,7 +6,7 @@ describe('Given Listener object', () => {
   const expectedUserKey = 'Lemon';
   let pubSub;
   let subscribeCalls = 0;
-  const expectedSubIds = ['bar', 'banana'];
+  const expectedSubId = 'bar';
   let getCredentialsStub = null;
   let getConfigUtilStub = null;
   const listener = new Listener();
@@ -35,8 +35,8 @@ describe('Given Listener object', () => {
       };
     });
 
-    getConfigUtilStub = sandbox.stub(listener.configUtil, 'getSubscriptions', function () {
-      return expectedSubIds;
+    getConfigUtilStub = sandbox.stub(listener.configUtil, 'getSubscriptionId', function () {
+      return expectedSubId;
     });
   });
 
@@ -60,19 +60,19 @@ describe('Given Listener object', () => {
       expect(getConfigUtilStub.calledOnce).toBe(true);
       expect(getCredentialsStub.calledOnce).toBe(true);
       expect(pubSub.calledOnce).toBe(true);
-      expect(expectedSubIds.length).toBe(subscribeCalls);
+      expect(1).toBe(subscribeCalls);
       done();
     });
   });
 
   it('listening should succeed with subscriptions input as args.', (done) => {
-    const subscriptions = ['foo', 'bar', 'banana', 'dragonFruit'];
-    const promise = listener.listen(null, subscriptions);
+    const subscription = 'foo';
+    const promise = listener.listen(null, subscription);
 
     promise.then((result) => {
       expect(result).toBe(true);
       expect(pubSub.calledOnce).toBe(true);
-      expect(subscriptions.length).toBe(subscribeCalls);
+      expect(1).toBe(subscribeCalls);
       done();
     });
   });
