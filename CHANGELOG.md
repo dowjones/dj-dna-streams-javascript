@@ -86,4 +86,4 @@
 ==================
 - [breaking] Removed abililty to consume more than one stream at a time.
 - [tests] Updated tests.
-- [docs] Update README.
+- [docs] Updated README.
