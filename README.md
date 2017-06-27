@@ -8,14 +8,11 @@ DNA Streaming Client - written in Javascript.
 This project is an NPM module. That means it can be installed as a kind of library for your main project. To do this go to your main project's root. At the command line execute the following:
 
 ~~~~
-npm install git+https://git@github.com/dowjones/syndicationhub/dj-dna-streaming-javascript.git --save
+npm install git+https://git@github.com/dowjones/dj-dna-streams-javascript.git --save
 ~~~~
- 
- or 
 
-~~~~
-npm install --save dj-dna-streaming-javascript
-~~~~
+Alternatively you can simply check out this project from git.
+
 
 #### Configuring The App
 
