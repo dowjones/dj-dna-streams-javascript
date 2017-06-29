@@ -1,3 +1,3 @@
-const listener = require('./listener');
+const Listener = require('./Listener');
 
-module.exports = listener;
+module.exports.Listener = Listener;
