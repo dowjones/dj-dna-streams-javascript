@@ -87,3 +87,10 @@
 - [breaking] Removed abililty to consume more than one stream at a time.
 - [tests] Updated tests.
 - [docs] Updated README.
+
+1.0.2 / 2017-06-29
+==================
+- [changed] Updated default production URI.
+- [changed] Fixed license to MIT.
+- [changed] Updated version and GIT URI in package.json.
+
