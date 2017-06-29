@@ -8,7 +8,7 @@ class ConfigUtil {
       SERVICE_ACCOUNT_ID: 'SERVICE_ACCOUNT_ID',
       SUBSCRIPTION_ID: 'SUBSCRIPTION_ID',
       CREDENTIALS_URI: 'CREDENTIALS_URI',
-      DEFAULT_CREDENTIALS_URI: 'https://api.dowjones.io/alpha/accounts/streaming-credentials'
+      DEFAULT_CREDENTIALS_URI: 'https://api.dowjones.com/alpha/accounts/streaming-credentials'
     };
   }
 
