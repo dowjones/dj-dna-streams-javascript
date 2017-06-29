@@ -33,7 +33,7 @@ Option 2. Set an environment variable. Setting one of the 2 environment variable
 
 Option 3: Passing values as function arguments. Specifically you can pass either the service account ID and/or subscription ID. When you start a listener you can pass the service account ID to the Listener constructor like so:
 
-> var Listener = require('dj-dna-streaming-javascript');
+> var Listener = require('dj-dna-streaming-javascript').Listener;
 >
 > var onMessageCallback = function(msg) {
 >    console.log('One incoming message:' + JSON.stringify(msg.data));
@@ -46,7 +46,7 @@ This will override both the environmental variable and the configuration file se
 
 If you want to pass the subscription ID via function arguments, take a look at the following code:
 
-> var Listener = require('dj-dna-streaming-javascript');
+> var Listener = require('dj-dna-streaming-javascript').Listener;
 >
 > var onMessageCallback = function(msg) {
 >    console.log('One incoming message:' + JSON.stringify(msg.data));
@@ -90,7 +90,7 @@ dj-dna-streaming-javascript
 
 The following is some very basic code. Use it to listen to a DNA subscription. It assumes you have configured the app correct. (See the *Configuring The App* section above).
 
-> var Listener = require('Listener');
+> var Listener = require('dj-dna-streaming-javascript').Listener;
 >
 > var onMessageCallback = function(msg) {
 >    console.log('One incoming message:' + JSON.stringify(msg.data));
