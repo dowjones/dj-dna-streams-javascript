@@ -70,3 +70,7 @@
 ==================
 - [patch] Bug with eslint where trailing commas were always expected in cases where none should have been expected.
 - [tests] Refactored some tests by cleaning up unused parameters and simplified return objects in some arrow functions.
+
+0.2.3 / 2017-07-05
+==================
+- [patch] Adding ack method for each message -- removes dupes in future messages.

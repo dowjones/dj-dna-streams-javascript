@@ -39,7 +39,7 @@ class Listener {
       console.log(`Listening to subscription: ${subscription.name}`);
 
       const onMessage = (msg) => {
-        msg.skip();
+        msg.ack();
         return onMessageCallback(msg, subscription.topic);
       };
 
