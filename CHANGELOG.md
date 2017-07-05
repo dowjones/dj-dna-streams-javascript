@@ -94,3 +94,8 @@
 - [changed] Fixed license to MIT.
 - [changed] Updated version and GIT URI in package.json.
 
+1.0.3 / 2017-07-05
+==================
+- [patch] Update to acknowledge each message.
+
+
