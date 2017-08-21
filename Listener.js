@@ -1,6 +1,8 @@
 const googleCloud = require('google-cloud');
 const ConfigUtil = require('./config/ConfigUtil');
 const fetchCredentials = require('./fetchCredentials');
+const path = require('path');
+const os = require('os');
 
 /** Class that allows you to listen to a number of Dow Jones PubSub subscriptions. This is a singleton. */
 class Listener {
@@ -10,10 +12,13 @@ class Listener {
     this.configUtil = new ConfigUtil(accountId);
   }
 
-
   initialize(credentials) {
-    this.gCloudProject = googleCloud({ project_id: credentials.project_id, credentials });
     this.projectId = credentials.project_id;
+    this.pubsubClient = googleCloud.pubsub({
+      projectId: this.projectId,
+      credentials
+    });
+
     this.defaultSubscriptionId = this.configUtil.getSubscriptionId();
   }
 
@@ -53,7 +58,7 @@ class Listener {
   }
 
   readyListener(onMessageCallback, subscriptionId) {
-    const pubsubClient = this.getPubSubClient();
+    // const pubsubClient = this.getPubSubClient();
     const sub = subscriptionId || this.defaultSubscriptionId;
 
     if (!sub || sub.length <= 0) {
@@ -69,13 +74,16 @@ class Listener {
       return onMessageCallback(msg);
     };
 
-    const pubsubSubscription = pubsubClient.subscription(subscriptionFullName);
+    const pubsubSubscription = this.pubsubClient.subscription(subscriptionFullName);
 
-    pubsubSubscription.pull().then((data) => {
+    pubsubSubscription.get().then((data) => {
       const pubsubSub = data[0];
-      console.log(`Received ${pubsubSub.length} messages.`);
-
-      pubsubSub.forEach(message => onMessage(message));
+      pubsubSub.on('message', onMessage);
+      pubsubSub.on('error', (subErr) => {
+        console.log(`On Subscription Error: ${subErr}`);
+        pubsubSub.removeListener('message', onMessage);
+        pubsubSub.on('message', onMessage);
+      });
     }).catch((err) => {
       console.log(`Error retrieving subscription from Google PubSub: ${err}`);
     });

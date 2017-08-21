@@ -102,4 +102,10 @@
 ==================
 - [patch] Reverting to pull function instead of get because of permission errors we suddenly are encountering.
 
+1.0.5 / 2017-08-17
+==================
+- [patch] Upgrading Google Cloud version to get better delivery reliability
+- [patch] Downgraded demo Docker version to node 6.5.1 slim to match current development version.
+
+
 
