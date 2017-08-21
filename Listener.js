@@ -71,14 +71,11 @@ class Listener {
 
     const pubsubSubscription = pubsubClient.subscription(subscriptionFullName);
 
-    pubsubSubscription.get().then((data) => {
+    pubsubSubscription.pull().then((data) => {
       const pubsubSub = data[0];
-      pubsubSub.on('message', onMessage);
-      pubsubSub.on('error', (subErr) => {
-        console.log(`On Subscription Error: ${subErr}`);
-        pubsubSub.removeListener('message', onMessage);
-        pubsubSub.on('message', onMessage);
-      });
+      console.log(`Received ${pubsubSub.length} messages.`);
+
+      pubsubSub.forEach(message => onMessage(message));
     }).catch((err) => {
       console.log(`Error retrieving subscription from Google PubSub: ${err}`);
     });

@@ -98,4 +98,8 @@
 ==================
 - [patch] Update to acknowledge each message.
 
+1.0.4 / 2017-08-17
+==================
+- [patch] Reverting to pull function instead of get because of permission errors we suddenly are encountering.
+
 
