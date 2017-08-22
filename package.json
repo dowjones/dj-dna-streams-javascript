@@ -1,6 +1,6 @@
 {
   "name": "dj-dna-streaming-javascript",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Client to consume Dow Jones DNA subscription events",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "author": "Dow Jones",
   "license": "MIT",
   "dependencies": {
-    "google-cloud": "^0.44.0",
+    "google-cloud": "^0.56.0",
     "lodash": "^4.17.4",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
