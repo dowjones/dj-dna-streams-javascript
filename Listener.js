@@ -58,7 +58,6 @@ class Listener {
   }
 
   readyListener(onMessageCallback, subscriptionId) {
-    // const pubsubClient = this.getPubSubClient();
     const sub = subscriptionId || this.defaultSubscriptionId;
 
     if (!sub || sub.length <= 0) {
