@@ -10,7 +10,7 @@ ${SERVICE_ACCOUNT_ID:?"Need to set SERVICE_ACCOUNT_ID environment variable."}
 ${SUBSCRIPTION_ID:?"Need to set SUBSCRIPTION_ID environment variable."}
 ${ENV:?"Need to set ENV environment variable."}
 
-TIMEOUT=240 # NOTE: 2017-01-25: fleschec: In seconds
+TIMEOUT=180 # NOTE: 2017-01-25: fleschec: In seconds
 NAME="dj-dna-streaming-javascript-asdvkds-for-testing-only"
 
 shutdown() {
@@ -40,6 +40,7 @@ run_docker() {
   -e SERVICE_ACCOUNT_ID=$SERVICE_ACCOUNT_ID \
   -e SUBSCRIPTION_ID=$SUBSCRIPTION_ID \
   -e CREDENTIALS_URI="https://extraction-api-dot-djsyndicationhub-$ENV.appspot.com/alpha/accounts/streaming-credentials" \
+  -e QUIET_DEMO=true \
   $NAME-tag
 }
 
@@ -80,7 +81,7 @@ waitThen() {
       then
         echo "Test successful! Timing out. Shutting down ...".
         $funcOnTimeout
-        shutdown 1
+        shutdown 0
         break
       fi
   done
