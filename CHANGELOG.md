@@ -107,5 +107,11 @@
 - [patch] Upgrading Google Cloud version to get better delivery reliability
 - [patch] Downgraded demo Docker version to node 6.5.1 slim to match current development version.
 
+1.0.6 / 2018-01-29
+==================
+- [changed] - Updated demo code to accept environment variable that, when used, reduces the output volume.
+- [changed] - Added test shell script './test/test_run_docker.sh' for testing Docker and streams; to be used only with DNA Engineering assistance.  
+
+
 
 
