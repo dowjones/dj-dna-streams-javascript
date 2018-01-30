@@ -15,19 +15,19 @@
   "author": "Dow Jones",
   "license": "MIT",
   "dependencies": {
-    "google-cloud": "^0.56.0",
-    "lodash": "^4.17.4",
-    "request": "^2.81.0",
-    "request-promise": "^4.2.1",
-    "gulp": "^3.9.1",
-    "gulp-jasmine": "^2.4.2"
+    "google-cloud": "0.56.0",
+    "lodash": "4.17.4",
+    "request": "2.81.0",
+    "request-promise": "4.2.1",
+    "gulp": "3.9.1",
+    "gulp-jasmine": "2.4.2"
   },
   "devDependencies": {
-    "eslint": "^3.10.2",
-    "eslint-config-airbnb": "^13.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.7.1",
-    "sinon": "^1.17.6"
+    "eslint": "3.10.2",
+    "eslint-config-airbnb": "13.0.0",
+    "eslint-plugin-import": "2.2.0",
+    "eslint-plugin-jsx-a11y": "2.2.3",
+    "eslint-plugin-react": "6.7.1",
+    "sinon": "1.17.6"
   }
 }
