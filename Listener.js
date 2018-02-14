@@ -7,9 +7,8 @@ const os = require('os');
 /** Class that allows you to listen to a number of Dow Jones PubSub subscriptions. This is a singleton. */
 class Listener {
 
-  constructor(accountId) {
-    this.accountId = accountId;
-    this.configUtil = new ConfigUtil(accountId);
+  constructor(accountCredentials) {
+    this.configUtil = new ConfigUtil(accountCredentials);
   }
 
   initialize(credentials) {
@@ -39,22 +38,22 @@ class Listener {
    * want to use the default.
    */
   listen(onMessageCallback, subscription) {
-    return this.getCredentials(this.configUtil).then((credentials) => {
+    return this.getCredentials().then((credentials) => {
       this.initialize(credentials);
       this.readyListener(onMessageCallback, subscription);
       return true;
-    }).catch((err) => {
+    });/*.catch((err) => {
       console.log(`Encountered an error attempting to get cloud credentials on behalf of customer: ${err.message}`);
       return false;
-    });
-  }
-
-  getCredentials() {
-    return fetchCredentials(this.configUtil);
+    });*/
   }
 
   getPubSubClient() {
     return this.gCloudProject.pubsub({ projectId: this.projectId });
+  }
+
+  getCredentials() {
+    return fetchCredentials(this.configUtil);
   }
 
   readyListener(onMessageCallback, subscriptionId) {

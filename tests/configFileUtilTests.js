@@ -28,6 +28,27 @@ describe('configUtil', () => {
     expect(serviceAccountId).toBe('foo');
   });
 
+  it('should get the correct customer service account credentials.', () => {
+    // Arrange
+    const configFileUtil = new ConfigFileUtil();
+    configFileUtil.setConfigFilePath(pathConfig);
+
+    const expectedUserId = 'account@account.com';
+    const expectedClientId = 'clientID123';
+    const expectedPassword = 'Password123';
+
+    // Act
+    const accountCreds = configFileUtil.getAccountCredentials();
+    const actualUserId = accountCreds.userId;
+    const actualClientId = accountCreds.clientId;
+    const actualPassword = accountCreds.password;
+
+    // Assert
+    expect(actualUserId).toBe(expectedUserId);
+    expect(actualClientId).toBe(expectedClientId);
+    expect(actualPassword).toBe(expectedPassword);
+  });
+
   it('should get the correct subscription ID.', () => {
     // Arrange
     const configFileUtil = new ConfigFileUtil();
@@ -48,6 +69,6 @@ describe('configUtil', () => {
     const credentialsUri = configFileUtil.getCredentialsUri();
 
     // Assert
-    // expect(expectedUri).toBe(credentialsUri);
+    expect(expectedUri).toBe(credentialsUri);
   });
 });
