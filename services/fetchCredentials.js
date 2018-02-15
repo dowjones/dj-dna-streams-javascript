@@ -1,5 +1,5 @@
 const request = require('request-promise');
-
+const JwtService = require('./JwtService');
 
 const fetchCredentials = (configUtil) => {
 
@@ -17,14 +17,13 @@ const fetchCredentials = (configUtil) => {
     return request(options)
       .then((response) => {
         const result = JSON.parse(response);
+        if (!result.data.attributes || !result.data.attributes.streaming_credentials) {
+          throw new Error("Error: Unable to find streaming credentials for given account");
+        }
         const credentials = result.data.attributes.streaming_credentials;
 
         return JSON.parse(credentials);
-      })
-      .catch((err) => {
-        console.log(`Error: ${JSON.stringify(err)}`);
-        return err;
-      });    
+      });
   };
 
   return getAuthHeaders(configUtil)
@@ -38,7 +37,8 @@ const getAuthHeaders = (configUtil) => {
   const oauthCreds = configUtil.getAccountCredentials();
 
   if (oauthCreds) {
-    return fetchJwt(configUtil.Constants.OAUTH_URL, oauthCreds)
+    const jwtService = new JwtService(oauthCreds, configUtil.Constants.OAUTH_URL);
+    return jwtService.fetchJwt()
       .then((jwt) => {
         return {
           'Authorization': jwt
@@ -58,61 +58,13 @@ const getAuthHeaders = (configUtil) => {
 
     else {
       // missing oauth creds and account ID, throw error
-      throw new Error(
-        "No account credentials specified\n" +
+      return Promise.reject(new Error(
+        "Error: No account credentials specified\n" +
         "Must specify user_id, client_id, and password as args to Listener constructor, env vars, or via customerConfig.json file\n" +
         "See dj-dna-streaming-javascript README.md"
-      );
+      ));
     }
   }
-}
-
-
-const fetchJwt = (oauthUrl, creds) => {
-  
-  // two requests need to be made to the same URL to obtain a JWT
-  // the second request to obtain the JWT contains parameters from the response of the init request
-  const initReqOptions = {
-    method: 'POST',
-    uri: oauthUrl,
-    body: {
-      username: creds.userId,
-      client_id: creds.clientId,
-      password: creds.password,
-      connection: 'service-account',
-      grant_type: 'password',
-      scope: 'openid service_account_id'
-    },
-    json: true
-  };
-
-  const requestJwt = (initResponse) => {
-    const jwtReqOptions = {
-      method: 'POST',
-      uri: oauthUrl,
-      body: {
-        scope: 'openid pib',
-        grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-        access_token: initResponse.access_token,
-        connection: 'service-account',
-        client_id: creds.clientId,
-        assertion: initResponse.id_token
-      },
-      json: true
-    };
-
-    return request(jwtReqOptions)
-      .then((response) => {
-        return response.token_type + ' ' + response.access_token;
-      }).catch((error) => {
-        console.log(error);
-      });
-  };
-
-  return request(initReqOptions)
-    .then((response) => {
-      return requestJwt(response);
-    })
 }
 
 module.exports = fetchCredentials;

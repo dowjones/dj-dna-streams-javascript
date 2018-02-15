@@ -1,6 +1,6 @@
 const googleCloud = require('google-cloud');
 const ConfigUtil = require('./config/ConfigUtil');
-const fetchCredentials = require('./fetchCredentials');
+const fetchCredentials = require('./services/fetchCredentials');
 const path = require('path');
 const os = require('os');
 
@@ -42,10 +42,14 @@ class Listener {
       this.initialize(credentials);
       this.readyListener(onMessageCallback, subscription);
       return true;
-    });/*.catch((err) => {
-      console.log(`Encountered an error attempting to get cloud credentials on behalf of customer: ${err.message}`);
+    }).catch((err) => {
+      if (err.message) {
+        console.log(err.message);
+      } else {
+        console.log(JSON.stringify(err));
+      }
       return false;
-    });*/
+    });
   }
 
   getPubSubClient() {
