@@ -25,6 +25,28 @@ describe('configUtil', () => {
     expect(serviceAccountId).toBe('123A');
   });
 
+  it('should get the correct customer service account credentials', () => {
+    // Arrange
+    process.env[configUtil.Constants.USER_ID] = 'userId';
+    process.env[configUtil.Constants.CLIENT_ID] = 'clientId';
+    process.env[configUtil.Constants.PASSWORD] = 'password';
+
+    const expectedUserId = 'userId';
+    const expectedClientId = 'clientId';
+    const expectedPassword = 'password';
+
+    // Act
+    const accountCreds = configUtil.getAccountCredentials();
+    const actualUserId = accountCreds.userId;
+    const actualClientId = accountCreds.clientId;
+    const actualPassword = accountCreds.password;
+
+    // Assert
+    expect(actualUserId).toBe(expectedUserId);
+    expect(actualClientId).toBe(expectedClientId);
+    expect(actualPassword).toBe(expectedPassword);
+  });
+
   it('should get the correct subscription IDs.', () => {
     // Arrange
     process.env[configUtil.Constants.SUBSCRIPTION_ID] = 'ABC';

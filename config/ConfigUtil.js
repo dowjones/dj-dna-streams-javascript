@@ -1,10 +1,25 @@
-const ConfigFileUtil = require('./ConfigFileUtil');
+const ConfigFileUtil = require(
+  './ConfigFileUtil');
 
 class ConfigUtil {
 
-  constructor(accountId) {
-    this.accountId = accountId;
+  constructor(credentials) {
+    /* Going forward, credentials should be an object containing the needful 
+     * fields to authenticate a client's service account via the new authentication flow.
+     * However, to avoid breaking the previous auth flow, we are, for the time being, 
+     * allowing credentials to be a string containing the service account ID.
+     */
+    if (typeof credentials === 'string') {
+      this.accountId = credentials; 
+    } else if (credentials && credentials.userId && credentials.clientId && credentials.password) {
+      this.accountCreds = credentials;
+    } 
+    
     this.Constants = {
+      OAUTH_URL: 'https://accounts.dowjones.com/oauth2/v1/token',
+      USER_ID: 'USER_ID',
+      CLIENT_ID: 'CLIENT_ID',
+      PASSWORD: 'PASSWORD',
       SERVICE_ACCOUNT_ID: 'SERVICE_ACCOUNT_ID',
       SUBSCRIPTION_ID: 'SUBSCRIPTION_ID',
       CREDENTIALS_URI: 'CREDENTIALS_URI',
@@ -12,6 +27,7 @@ class ConfigUtil {
     };
   }
 
+  // depricated: going forward clients should instead use getAccountCredentials
   getServiceAccountId() {
     if (this.accountId) {
       return this.accountId;
@@ -24,6 +40,26 @@ class ConfigUtil {
     }
 
     return this.accountId;
+  }
+
+  getAccountCredentials() {
+    if (!this.accountCreds) {
+      if (
+        process.env[this.Constants.USER_ID] && 
+        process.env[this.Constants.CLIENT_ID] &&
+        process.env[this.Constants.PASSWORD]
+      ) {
+        this.accountCreds = {
+          userId: process.env[this.Constants.USER_ID],
+          clientId: process.env[this.Constants.CLIENT_ID],
+          password: process.env[this.Constants.PASSWORD]
+        };
+      } else {
+        this.accountCreds = this.getConfigFileUtil().getAccountCredentials();
+      }
+    }
+
+    return this.accountCreds;
   }
 
   getConfigFileUtil() {
