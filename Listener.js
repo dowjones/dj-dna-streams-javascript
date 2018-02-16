@@ -52,10 +52,6 @@ class Listener {
     });
   }
 
-  getPubSubClient() {
-    return this.gCloudProject.pubsub({ projectId: this.projectId });
-  }
-
   getCredentials() {
     return fetchCredentials(this.configUtil);
   }

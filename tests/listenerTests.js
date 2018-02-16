@@ -1,5 +1,6 @@
 const sinon = require('sinon');
 const Listener = require('../Listener');
+const googleCloud = require('google-cloud');
 
 describe('Given Listener object', () => {
   let sandbox;
@@ -21,7 +22,7 @@ describe('Given Listener object', () => {
       });
     });
 
-    pubSub = sandbox.stub(listener, 'getPubSubClient', function () {
+    pubSub = sandbox.stub(googleCloud, 'pubsub', function () {
       return {
         subscription: () => {
           subscribeCalls += 1;
