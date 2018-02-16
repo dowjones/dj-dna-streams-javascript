@@ -9,12 +9,12 @@ class ConfigUtil {
      * However, to avoid breaking the previous auth flow, we are, for the time being, 
      * allowing credentials to be a string containing the service account ID.
      */
-    if (credentials && credentials.userId && credentials.clientId && credentials.password) {
+    if (typeof credentials === 'string') {
+      this.accountId = credentials; 
+    } else if (credentials && credentials.userId && credentials.clientId && credentials.password) {
       this.accountCreds = credentials;
-    } else {
-      this.accountId = credentials;
-    }
-
+    } 
+    
     this.Constants = {
       OAUTH_URL: 'https://accounts.dowjones.com/oauth2/v1/token',
       USER_ID: 'USER_ID',
