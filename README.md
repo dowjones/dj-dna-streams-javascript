@@ -40,33 +40,37 @@ Option 2. Set environment variables.
 
 Option 3: Passing values as function arguments. Specifically you can pass either the service account credentials and/or subscription ID. When you start a listener you can pass the service account crendentials to the Listener constructor as an object with the fields "user_id", "client_id", and "password", like so:
 
-> var Listener = require('dj-dna-streaming-javascript').Listener;
->
-> var onMessageCallback = function(msg) {
->    console.log('One incoming message:' + JSON.stringify(msg.data));
-> };
->
-> const listener = new Listener({
+~~~~
+  var Listener = require('dj-dna-streaming-javascript').Listener;
+
+  var onMessageCallback = function(msg) {
+     console.log('One incoming message:' + JSON.stringify(msg.data));
+  };
+
+  const listener = new Listener({
     user_id: "<YOUR USER ID HERE>",
     client_id: "<YOUR CLIENT ID HERE>",
     password: "<YOUR PASSWORD HERE>"
   });
-> listener.listen(onMessageCallback);
+  listener.listen(onMessageCallback);
+~~~~
 
 This will override both the environment variable and the configuration file service account credentials.
 
 If you want to pass the subscription ID via function arguments, take a look at the following code:
 
-> var Listener = require('dj-dna-streaming-javascript').Listener;
->
-> var onMessageCallback = function(msg) {
->    console.log('One incoming message:' + JSON.stringify(msg.data));
-> };
->
-> var subscriptionId = 'abcdefghi123'; 
->
-> const listener = new Listener();
-> listener.listen(onMessageCallback, subscriptionId);
+~~~~
+  var Listener = require('dj-dna-streaming-javascript').Listener;
+
+  var onMessageCallback = function(msg) {
+     console.log('One incoming message:' + JSON.stringify(msg.data));
+  };
+
+  var subscriptionId = 'abcdefghi123'; 
+
+  const listener = new Listener();
+  listener.listen(onMessageCallback, subscriptionId);
+~~~~
 
 
 #### Running the Demo Code
@@ -103,11 +107,13 @@ dj-dna-streaming-javascript
 
 The following is some very basic code. Use it to listen to a DNA subscription. It assumes you have configured the app correct. (See the *Configuring The App* section above).
 
-> var Listener = require('dj-dna-streaming-javascript').Listener;
->
-> var onMessageCallback = function(msg) {
->    console.log('One incoming message:' + JSON.stringify(msg.data));
-> };
->
-> const listener = new Listener();
-> listener.listen(onMessageCallback);
+~~~~
+  var Listener = require('dj-dna-streaming-javascript').Listener;
+ 
+  var onMessageCallback = function(msg) {
+     console.log('One incoming message:' + JSON.stringify(msg.data));
+  };
+ 
+  const listener = new Listener();
+  listener.listen(onMessageCallback);
+~~~~
