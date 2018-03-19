@@ -46,16 +46,25 @@ class ConfigFileUtil {
       this.initialize();
     }
 
-    const serviceAccountId = _.trim(this.config.service_account_id);
-    this.validate(serviceAccountId);
-
-    return serviceAccountId;
+    return _.trim(this.config.service_account_id);
   }
 
-  validate(serviceAccountId) {
-    if (_.trim(serviceAccountId) === '' || !serviceAccountId) {
-      throw new Error('Encountered error while trying to determine the service account ID. It is either blank or not set.');
+  getAccountCredentials() {
+    if (!this.initialized) {
+      this.initialize();
     }
+
+    let accountCreds;
+
+    if (this.config.user_id && this.config.client_id && this.config.password) {
+      accountCreds = {
+        userId: _.trim(this.config.user_id),
+        clientId: _.trim(this.config.client_id),
+        password: _.trim(this.config.password)
+      }
+    }
+
+    return accountCreds;
   }
 }
 

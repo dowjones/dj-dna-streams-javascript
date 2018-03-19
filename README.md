@@ -16,46 +16,61 @@ Alternatively you can simply check out this project from Git.
 
 #### Configuring The App
 
-There are three ways to pass configuration variables to the app.  
+There are three ways to pass configuration variables to the app. They are listed in increasing order of precendence (for example, if credentials or subscription ID are set via both options 1 and 2, the credentials set in option 2 will be used and those set in option 1 will be ignored).
 
-Option 1. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your service account ID and your subscription ID. Ensure your additions follow the JSON data format conventions.
+Option 1. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your service account credentials (user_id, client_id, and password) and your subscription ID. Ensure your additions follow the JSON data format conventions.
 
 or
 
-Option 2. Set an environment variable. Setting one of the 2 environment variables listed below will override any other configuration setting for that value.
+Option 2. Set environment variables.
 
-  **SERVICE_ACCOUNT_ID**
-    This environment variable is intended to hold your Dow Jones provided service account ID. This will override any setting in your config file.
-    
+  **USER_ID**
+    Dow Jones provided service account user ID.
+
+  **CLIENT_ID**
+    Dow Jones provided service account client ID.
+
+  **PASSWORD**
+    Dow Jones provided service account password.
+   
   **SUBSCRIPTION_ID**
     This environment variable holds the subscription ID.
-      
 
-Option 3: Passing values as function arguments. Specifically you can pass either the service account ID and/or subscription ID. When you start a listener you can pass the service account ID to the Listener constructor like so:
+    Note that USER_ID, CLIENT_ID, and PASSWORD will all need to be set in order to pass credentials to the app in this way. If any one of these is not set, any others that are set will be ignored.
 
-> var Listener = require('dj-dna-streaming-javascript').Listener;
->
-> var onMessageCallback = function(msg) {
->    console.log('One incoming message:' + JSON.stringify(msg.data));
-> };
->
-> const listener = new Listener("<YOUR ACCOUNT ID HERE>");
-> listener.listen(onMessageCallback);
+Option 3: Passing values as function arguments. Specifically you can pass either the service account credentials and/or subscription ID. When you start a listener you can pass the service account crendentials to the Listener constructor as an object with the fields "user_id", "client_id", and "password", like so:
 
-This will override both the environmental variable and the configuration file service account ID setting.
+~~~~
+  var Listener = require('dj-dna-streaming-javascript').Listener;
+
+  var onMessageCallback = function(msg) {
+     console.log('One incoming message:' + JSON.stringify(msg.data));
+  };
+
+  const listener = new Listener({
+    user_id: "<YOUR USER ID HERE>",
+    client_id: "<YOUR CLIENT ID HERE>",
+    password: "<YOUR PASSWORD HERE>"
+  });
+  listener.listen(onMessageCallback);
+~~~~
+
+This will override both the environment variable and the configuration file service account credentials.
 
 If you want to pass the subscription ID via function arguments, take a look at the following code:
 
-> var Listener = require('dj-dna-streaming-javascript').Listener;
->
-> var onMessageCallback = function(msg) {
->    console.log('One incoming message:' + JSON.stringify(msg.data));
-> };
->
-> var subscriptionId = 'abcdefghi123'; 
->
-> const listener = new Listener();
-> listener.listen(onMessageCallback, subscriptionId);
+~~~~
+  var Listener = require('dj-dna-streaming-javascript').Listener;
+
+  var onMessageCallback = function(msg) {
+     console.log('One incoming message:' + JSON.stringify(msg.data));
+  };
+
+  var subscriptionId = 'abcdefghi123'; 
+
+  const listener = new Listener();
+  listener.listen(onMessageCallback, subscriptionId);
+~~~~
 
 
 #### Running the Demo Code
@@ -80,7 +95,9 @@ Step 2: Run the docker image
 
 ~~~
 docker run -it \
--e SERVICE_ACCOUNT_ID="<your service account ID" \
+-e USER_ID="<your user ID"> \
+-e CLIENT_ID="<your client ID"> \
+-e PASSWORD="<your password>" \
 -e SUBSCRIPTION_ID="<your subscription ID>" \
 dj-dna-streaming-javascript
 ~~~
@@ -90,11 +107,13 @@ dj-dna-streaming-javascript
 
 The following is some very basic code. Use it to listen to a DNA subscription. It assumes you have configured the app correct. (See the *Configuring The App* section above).
 
-> var Listener = require('dj-dna-streaming-javascript').Listener;
->
-> var onMessageCallback = function(msg) {
->    console.log('One incoming message:' + JSON.stringify(msg.data));
-> };
->
-> const listener = new Listener();
-> listener.listen(onMessageCallback);
+~~~~
+  var Listener = require('dj-dna-streaming-javascript').Listener;
+ 
+  var onMessageCallback = function(msg) {
+     console.log('One incoming message:' + JSON.stringify(msg.data));
+  };
+ 
+  const listener = new Listener();
+  listener.listen(onMessageCallback);
+~~~~

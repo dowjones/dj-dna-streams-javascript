@@ -1,15 +1,14 @@
 const googleCloud = require('google-cloud');
 const ConfigUtil = require('./config/ConfigUtil');
-const fetchCredentials = require('./fetchCredentials');
+const fetchCredentials = require('./services/fetchCredentials');
 const path = require('path');
 const os = require('os');
 
 /** Class that allows you to listen to a number of Dow Jones PubSub subscriptions. This is a singleton. */
 class Listener {
 
-  constructor(accountId) {
-    this.accountId = accountId;
-    this.configUtil = new ConfigUtil(accountId);
+  constructor(accountCredentials) {
+    this.configUtil = new ConfigUtil(accountCredentials);
   }
 
   initialize(credentials) {
@@ -39,22 +38,22 @@ class Listener {
    * want to use the default.
    */
   listen(onMessageCallback, subscription) {
-    return this.getCredentials(this.configUtil).then((credentials) => {
+    return this.getCredentials().then((credentials) => {
       this.initialize(credentials);
       this.readyListener(onMessageCallback, subscription);
       return true;
     }).catch((err) => {
-      console.log(`Encountered an error attempting to get cloud credentials on behalf of customer: ${err.message}`);
+      if (err.message) {
+        console.log(err.message);
+      } else {
+        console.log(JSON.stringify(err));
+      }
       return false;
     });
   }
 
   getCredentials() {
     return fetchCredentials(this.configUtil);
-  }
-
-  getPubSubClient() {
-    return this.gCloudProject.pubsub({ projectId: this.projectId });
   }
 
   readyListener(onMessageCallback, subscriptionId) {
