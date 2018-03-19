@@ -107,8 +107,9 @@
 - [patch] Upgrading Google Cloud version to get better delivery reliability
 - [patch] Downgraded demo Docker version to node 6.5.1 slim to match current development version.
 
-1.1.0 / 2018-01-29
+1.1.0 / 2018-03-19
 ==================
+- [changed] - updated authentication to use new service account flow (while still supporting old account ID flow for backwards compatibility)
 - [changed] - Updated demo code to accept environment variable that, when used, reduces the output volume.
 - [changed] - Added test shell script './test/test_run_docker.sh' for testing Docker and streams; to be used only with DNA Engineering assistance.  
 
