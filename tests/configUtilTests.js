@@ -4,9 +4,10 @@ const ConfigUtil = require('../config/ConfigUtil');
 
 describe('configUtil', () => {
   let sandbox;
-  const configUtil = new ConfigUtil();
+  let configUtil;
 
   beforeEach(() => {
+    configUtil = new ConfigUtil();
     sandbox = sinon.sandbox.create();
   });
 
@@ -58,6 +59,27 @@ describe('configUtil', () => {
     expect(sub).toBe('ABC');
   });
 
+  it('should get the correct default credentials URI when a api key is not set.', () => {
+    // Arrange
+    const expectedUri = configUtil.Constants.DEFAULT_CREDENTIALS_URI_CLIENT_AUTH;
+    // Act
+    const credentialsUri = configUtil.getCredentialsUri();
+
+    // Assert
+    expect(expectedUri).toBe(credentialsUri);
+  });
+
+  it('should get the correct default credentials URI when a api key is not set.', () => {
+    // Arrange
+    const expectedUri = configUtil.Constants.DEFAULT_CREDENTIALS_URI_API_KEY_AUTH;
+    configUtil.accountId = "FAKE_ID!";
+    // Act
+    const credentialsUri = configUtil.getCredentialsUri();
+    // Assert
+    expect(expectedUri).toBe(credentialsUri);
+  });
+
+
   it('should get the correct credentials URI.', () => {
     // Arrange
     const expectedUri = 'http://piglovesslop.com';
@@ -71,11 +93,11 @@ describe('configUtil', () => {
   });
 
   it('should use the passed account ID.', () => {
-    // Arrange
-    // Act
-    const configUtilSpecial = new ConfigUtil('123');
+      // Arrange
+      // Act
+      const configUtilSpecial = new ConfigUtil('123');
 
-    // Assert
-    expect('123').toBe(configUtilSpecial.getServiceAccountId());
+      // Assert
+      expect('123').toBe(configUtilSpecial.getServiceAccountId());
+    });
   });
-});

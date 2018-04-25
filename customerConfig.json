@@ -1,6 +1,7 @@
 {
-  "user_id": "",
-  "client_id": "",
-  "password": "",
-  "subscription_id": ""
+  "service_account_id": "",
+  "user_id": "9ZZZ107700-svcaccount@dowjones.com",
+  "client_id": "uaNz1BvpyPPZ9RhjHZVA57wNEIW3VtH7",
+  "password": "Dowjones@123!",
+  "subscription_id": "dj-synhub-stream-uaNz1BvpyPPZ9RhjHZVA57wNEIW3VtH7-05m3x425n0-filtered-mC0PKC"
 }
