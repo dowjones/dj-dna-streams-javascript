@@ -23,9 +23,11 @@ class ConfigUtil {
       SERVICE_ACCOUNT_ID: 'SERVICE_ACCOUNT_ID',
       SUBSCRIPTION_ID: 'SUBSCRIPTION_ID',
       CREDENTIALS_URI: 'CREDENTIALS_URI',
-      DEFAULT_CREDENTIALS_URI: 'https://api.dowjones.com/alpha/accounts/streaming-credentials'
+      DEFAULT_CREDENTIALS_URI_API_KEY_AUTH: 'https://api.dowjones.com/alpha/accounts/streaming-credentials',
+      DEFAULT_CREDENTIALS_URI_CLIENT_AUTH: 'https://api.dowjones.com/dna/accounts/streaming-credentials'
     };
   }
+
 
   // depricated: going forward clients should instead use getAccountCredentials
   getServiceAccountId() {
@@ -86,7 +88,9 @@ class ConfigUtil {
     if (process.env[this.Constants.CREDENTIALS_URI]) {
       credentialsUri = process.env[this.Constants.CREDENTIALS_URI];
     } else {
-      credentialsUri = this.Constants.DEFAULT_CREDENTIALS_URI;
+      credentialsUri = this.accountId ?
+          this.Constants.DEFAULT_CREDENTIALS_URI_API_KEY_AUTH :
+          this.Constants.DEFAULT_CREDENTIALS_URI_CLIENT_AUTH;
     }
 
     return credentialsUri;
