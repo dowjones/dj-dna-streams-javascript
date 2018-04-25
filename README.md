@@ -22,33 +22,10 @@ Option 2. Client Credentials (user_id, client_id, password)
 
 #### Configuring The App
 
-There are three ways to pass configuration variables to the app. They are listed in increasing order of precendence (for example, if credentials or subscription ID are set via both options 1 and 2, the credentials set in option 2 will be used and those set in option 1 will be ignored).
+There are three ways to pass configuration variables to the app. Please note that environment variables (Option 1) will override values provided in the `customerConfig.json` file (Option 2).  
+They will not override values passed directly to the `Listener` constructor (Option 3).
 
-Option 1. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your service account credentials (user_id, client_id, and password) and your subscription ID. Ensure your additions follow the JSON data format conventions.
-
-###### Service Account Id
-
-```
-{
-  "service_account_id": "<Dow Jones provided Service Account Id>",
-  "subscription_id": "<Subscription ID returned upon stream creation>"
-}
-```
-
-###### Client Credentials
-
-```
-{
-  "user_id": "<Dow Jones provided service account user ID>",
-  "client_id": "<Dow Jones provided service account client ID>",
-  "password": "<Dow Jones provided service account password>",
-  "subscription_id": "<Subscription ID returned upon stream creation>"
-}
-```
-
-or
-
-Option 2. Set environment variables.
+Option 1. Set environment variables.
 
 ###### Service Account ID
 
@@ -73,6 +50,30 @@ Option 2. Set environment variables.
     This environment variable holds the subscription ID.
 
     Note that USER_ID, CLIENT_ID, and PASSWORD will all need to be set in order to pass credentials to the app in this way. If any one of these is not set, any others that are set will be ignored.
+
+Option 2. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your credentials and subscription ID. Ensure your additions follow the JSON data format conventions.
+
+###### Service Account Id
+
+```
+{
+  "service_account_id": "<Dow Jones provided Service Account Id>",
+  "subscription_id": "<Subscription ID returned upon stream creation>"
+}
+```
+
+###### Client Credentials
+
+```
+{
+  "user_id": "<Dow Jones provided service account user ID>",
+  "client_id": "<Dow Jones provided service account client ID>",
+  "password": "<Dow Jones provided service account password>",
+  "subscription_id": "<Subscription ID returned upon stream creation>"
+}
+```
+
+or
 
 Option 3: Passing values as function arguments. Specifically you can pass either the service account credentials and/or subscription ID. When you start a listener you can pass the service account crendentials to the Listener constructor as an object with the fields "user_id", "client_id", and "password", like so:
 
