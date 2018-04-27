@@ -15,12 +15,12 @@
   "author": "Dow Jones",
   "license": "MIT",
   "dependencies": {
-    "google-cloud": "0.56.0",
-    "lodash": "4.17.4",
-    "request": "2.81.0",
-    "request-promise": "4.2.1",
+    "@google-cloud/pubsub": "^0.18.0",
     "gulp": "3.9.1",
-    "gulp-jasmine": "2.4.2"
+    "gulp-jasmine": "2.4.2",
+    "lodash": "4.17.4",
+    "request": "^2.82.0",
+    "request-promise": "4.2.1"
   },
   "devDependencies": {
     "eslint": "3.10.2",

@@ -1,16 +1,29 @@
 const sinon = require('sinon');
 const Listener = require('../Listener');
-const googleCloud = require('google-cloud');
+
 
 describe('Given Listener object', () => {
   let sandbox;
-  const expectedUserKey = 'Lemon';
-  let pubSub;
   let subscribeCalls = 0;
+  const expectedUserKey = 'Lemon';
+  const pubSubStub =  {
+      subscription: () => {
+      subscribeCalls += 1;
+        return {
+            get: () => Promise.resolve([{
+              on: (resultType, fn) => {}
+            }])
+        };
+      }
+  };
+
+
+
+
   const expectedSubId = 'bar';
   let getCredentialsStub = null;
   let getConfigUtilStub = null;
-  const listener = new Listener();
+  const listener = new Listener(null, pubSubStub);
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
@@ -20,20 +33,6 @@ describe('Given Listener object', () => {
       return Promise.resolve({
         project_id: 'foo'
       });
-    });
-
-    pubSub = sandbox.stub(googleCloud, 'pubsub', function () {
-      return {
-        subscription: () => {
-          subscribeCalls += 1;
-          return {
-            get: () => Promise.resolve([{
-              on: (resultType, fn) => {
-              }
-            }])
-          };
-        }
-      };
     });
 
     getConfigUtilStub = sandbox.stub(listener.configUtil, 'getSubscriptionId', function () {
@@ -54,14 +53,14 @@ describe('Given Listener object', () => {
     // NOTE: 11-18-2016: fleschec: No need to provide a first argument 'onMessageCallback' since we are mocking
     // the test in such a way that no messages will ever be returned.
     // Act
+
     const promise = listener.listen(null);
 
     // Assert
     promise.then(() => {
       expect(getConfigUtilStub.calledOnce).toBe(true);
       expect(getCredentialsStub.calledOnce).toBe(true);
-      expect(pubSub.calledOnce).toBe(true);
-      expect(1).toBe(subscribeCalls);
+      expect(subscribeCalls).toBe(1);
       done();
     });
   });
@@ -72,7 +71,6 @@ describe('Given Listener object', () => {
 
     promise.then((result) => {
       expect(result).toBe(true);
-      expect(pubSub.calledOnce).toBe(true);
       expect(1).toBe(subscribeCalls);
       done();
     });
