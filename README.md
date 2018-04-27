@@ -137,7 +137,7 @@ Step 1: Build the docker image. Execute the following command line:
   
 Step 2: Run the docker image
 
-######Service Account ID
+###### Service Account ID
 
 ~~~
 docker run -it \
@@ -146,7 +146,7 @@ docker run -it \
 dj-dna-streaming-javascript
 ~~~
 
-######Client Credentials
+###### Client Credentials
 ~~~
 docker run -it \
 -e USER_ID="<your user ID"> \
