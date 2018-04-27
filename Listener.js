@@ -1,4 +1,4 @@
-const googleCloud = require('google-cloud');
+const PubSub = require('@google-cloud/pubsub');
 const ConfigUtil = require('./config/ConfigUtil');
 const fetchCredentials = require('./services/fetchCredentials');
 const path = require('path');
@@ -7,13 +7,14 @@ const os = require('os');
 /** Class that allows you to listen to a number of Dow Jones PubSub subscriptions. This is a singleton. */
 class Listener {
 
-  constructor(accountCredentials) {
+  constructor(accountCredentials, pubsubClient) {
     this.configUtil = new ConfigUtil(accountCredentials);
+    this.pubsubClient = pubsubClient;
   }
 
-  initialize(credentials) {
+  initialize(credentials, pubSub) {
     this.projectId = credentials.project_id;
-    this.pubsubClient = googleCloud.pubsub({
+    this.pubsubClient = this.pubsubClient || new PubSub({
       projectId: this.projectId,
       credentials
     });
