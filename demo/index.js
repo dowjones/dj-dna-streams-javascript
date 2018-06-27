@@ -3,10 +3,11 @@ const Listener = require('../Listener');
 const quietDemo = process.env.QUIET_DEMO;
 
 const onMessageCallback = (msg) => {
+  let message = `${msg.data}`;
   if (quietDemo === true.toString()) {
-    message = `${msg.data.substring(0, 50)} ...`;
+    message = `${message.substring(0, 50)} ...`;
   }
-  console.log(`Received message: ${msg.data}\n`);
+  console.log(`Received message: ${message}\n`);
 };
 
 const listener = new Listener();
