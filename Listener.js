@@ -1,5 +1,5 @@
 const PubSub = require('@google-cloud/pubsub');
-const ConfigUtil = require('./config/ConfigUtil');
+const ConfigUtil = require('./config/Config');
 const fetchCredentials = require('./services/fetchCredentials');
 const path = require('path');
 const os = require('os');

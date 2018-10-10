@@ -1,5 +1,5 @@
 {
-  "service_account_id": "foo",
+  "user_key": "foo",
   "user_id": "account@account.com",
   "client_id": "clientID123",
   "password": "Password123",

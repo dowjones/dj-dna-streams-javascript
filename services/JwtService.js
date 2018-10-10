@@ -19,7 +19,7 @@ class JwtService {
         password: this.credentials.password,
         connection: 'service-account',
         grant_type: 'password',
-        scope: 'openid service_account_id'
+        scope: 'openid user_key'
       },
       json: true
     };

@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const ConfigFileUtil = require('../config/ConfigFileUtil');
 const path = require('path');
 
-describe('configUtil', () => {
+describe('configFileUtil', () => {
   let sandbox;
   const pathConfig = path.join(__dirname, './config/testCustomerConfig.json');
 
@@ -15,17 +15,17 @@ describe('configUtil', () => {
     sandbox.restore();
   });
 
-  it('should get the correct customer service account ID.', () => {
+  it('should get the correct customer user key.', () => {
     // Arrange
-
     const configFileUtil = new ConfigFileUtil();
     configFileUtil.setConfigFilePath(pathConfig);
 
     // Act
-    const serviceAccountId = configFileUtil.getServiceAccountId();
+    const creds = configFileUtil.getAccountCredentials();
+    const userKey = creds.user_key;
 
     // Assert
-    expect(serviceAccountId).toBe('foo');
+    expect(userKey).toBe('foo');
   });
 
   it('should get the correct customer service account credentials.', () => {
@@ -39,8 +39,8 @@ describe('configUtil', () => {
 
     // Act
     const accountCreds = configFileUtil.getAccountCredentials();
-    const actualUserId = accountCreds.userId;
-    const actualClientId = accountCreds.clientId;
+    const actualUserId = accountCreds.user_id;
+    const actualClientId = accountCreds.client_id;
     const actualPassword = accountCreds.password;
 
     // Assert
@@ -59,16 +59,5 @@ describe('configUtil', () => {
 
     // Assert
     expect(sub).toBe('bar');
-  });
-
-  xit('should get the correct credentials URI.', () => {
-    // Arrange
-    const configFileUtil = new ConfigFileUtil();
-
-    // Act
-    const credentialsUri = configFileUtil.getCredentialsUri();
-
-    // Assert
-    expect(expectedUri).toBe(credentialsUri);
   });
 });
