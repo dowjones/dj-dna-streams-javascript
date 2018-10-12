@@ -28,12 +28,12 @@ class Config {
 
   getExtractionApiHost() {
     const extractionApiHost = process.env[this.Constants.EXTRACTION_API_HOST_ENV];
-    return extractionApiHost ? extractionApiHost : this.Constants.EXTRACTION_API_HOST_DEFAULT;
+    return extractionApiHost || this.Constants.EXTRACTION_API_HOST_DEFAULT;
   }
 
   getSubscriptionId() {
     const subscriptionId = process.env[this.Constants.SUBSCRIPTION_ID_ENV];
-    return subscriptionId ? subscriptionId : this._configFileUtil.getSubscriptionId();
+    return subscriptionId || this._configFileUtil.getSubscriptionId();
   }
 
   getAccountCredentials() {
