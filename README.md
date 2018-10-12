@@ -16,7 +16,7 @@ Alternatively you can simply check out this project from Git.
 #### Authentication Options
 There are two credential types that can be used.
 
-Option 1. Service Account Id (user_key)
+Option 1. User Key
    
 Option 2. Client Credentials (user_id, client_id, password)
 
@@ -27,10 +27,10 @@ They will not override values passed directly to the `Listener` constructor (Opt
 
 Option 1. Set environment variables.
 
-###### Service Account ID
+###### User Key
 
-  **user_key**
-     Dow Jones provided Service Account ID.
+  **USER_KEY**
+     Dow Jones provided user key.
   
   **SUBSCRIPTION_ID**
      This environment variable holds the subscription ID.   
@@ -53,11 +53,11 @@ Option 1. Set environment variables.
 
 Option 2. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your credentials and subscription ID. Ensure your additions follow the JSON data format conventions.
 
-###### Service Account Id
+###### User Key
 
 ```
 {
-  "user_key": "<Dow Jones provided Service Account Id>",
+  "user_key": "<Dow Jones provided user key>",
   "subscription_id": "<Subscription ID returned upon stream creation>"
 }
 ```
@@ -86,9 +86,9 @@ Option 3: Passing values as function arguments. Specifically you can pass either
 
   const listener = new Listener({
     /**
-     Service Account ID
+     User Key
     */
-    user_key: "<YOUR SERVICE ACCOUNT ID HERE>",
+    user_key: "<YOUR USER KEY HERE>",
     /**
      Client Credentials
     */
@@ -137,11 +137,11 @@ Step 1: Build the docker image. Execute the following command line:
   
 Step 2: Run the docker image
 
-###### Service Account ID
+###### User Key
 
 ~~~
 docker run -it \
--e user_key="<your service account ID"> \
+-e USER_KEY="<your user key"> \
 -e SUBSCRIPTION_ID="<your subscription ID>" \
 dj-dna-streaming-javascript
 ~~~
