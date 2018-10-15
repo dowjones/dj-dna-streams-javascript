@@ -41,7 +41,7 @@ class JwtService {
 
       return request(jwtReqOptions)
         .then((response) => {
-          return response.token_type + ' ' + response.access_token;
+          return `${response.token_type} ${response.access_token}`;
         });
     };
 
@@ -56,7 +56,7 @@ class JwtService {
             `\tClient ID: ${this.credentials.clientId}\n` +
             `\tPassword: ${this.credentials.password}`);
         } else throw error;
-      })
+      });
   }
 }
 
