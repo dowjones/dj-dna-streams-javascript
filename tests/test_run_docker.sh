@@ -6,9 +6,9 @@ USER_KEY=$1
 SUBSCRIPTION_ID=$2
 ENV=$3
 
-${USER_KEY:?"Need to set USER_KEY environment variable."}
-${SUBSCRIPTION_ID:?"Need to set SUBSCRIPTION_ID environment variable."}
-${ENV:?"Need to set ENV environment variable."}
+echo ${USER_KEY:?"Need to set USER_KEY environment variable."}
+echo ${SUBSCRIPTION_ID:?"Need to set SUBSCRIPTION_ID environment variable."}
+echo ${ENV:?"Need to set ENV environment variable."}
 
 TIMEOUT=180 # NOTE: 2017-01-25: fleschec: In seconds
 NAME="dj-dna-streaming-javascript-asdvkds-for-testing-only"

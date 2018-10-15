@@ -7,7 +7,8 @@ class Config {
     this.credentials = credentials;
 
     this.Constants = {
-      OAUTH_URL: 'https://accounts.dowjones.com/oauth2/v1/token',
+      OAUTH_URL_ENV: 'OAUTH_URL',
+      OAUTH_URL_DEFAULT: 'https://accounts.dowjones.com/oauth2/v1/token',
       USER_ID_ENV: 'USER_ID',
       CLIENT_ID_ENV: 'CLIENT_ID',
       PASSWORD_ENV: 'PASSWORD',
@@ -31,6 +32,11 @@ class Config {
     return extractionApiHost || this.Constants.EXTRACTION_API_HOST_DEFAULT;
   }
 
+  getOauthUrl() {
+    const oauthUrl = process.env[this.Constants.OAUTH_URL_ENV];
+    return oauthUrl || this.Constants.OAUTH_URL_DEFAULT;
+  }
+
   getSubscriptionId() {
     const subscriptionId = process.env[this.Constants.SUBSCRIPTION_ID_ENV];
     return subscriptionId || this._configFileUtil.getSubscriptionId();
@@ -51,9 +57,9 @@ class Config {
     }
 
     return this._areCredsSet(accountCreds) ? accountCreds : new Error(
-      "Error: No account credentials specified\n" +
-      "Must specify user_id, client_id, and password as args to Listener constructor, env vars, or via customerConfig.json file\n" +
-      "See dj-dna-streaming-javascript README.md"
+      'Error: No account credentials specified\n' +
+      'Must specify user_id, client_id, and password as args to Listener constructor, env vars, or via customerConfig.json file\n' +
+      'See dj-dna-streaming-javascript README.md'
     );
   }
 

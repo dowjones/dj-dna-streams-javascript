@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const sinon = require('sinon');
-const Config = require('../config/config');
+const Config = require('../config/Config');
 const path = require('path');
 
 describe('config', () => {
