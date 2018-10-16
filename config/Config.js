@@ -14,7 +14,7 @@ class Config {
       PASSWORD_ENV: 'PASSWORD',
       USER_KEY_ENV: 'USER_KEY',
       SUBSCRIPTION_ID_ENV: 'SUBSCRIPTION_ID',
-      EXTRACTION_API_HOST_ENV: 'EXTRACTION_API_HOST_ENV',
+      EXTRACTION_API_HOST_ENV: 'EXTRACTION_API_HOST',
       EXTRACTION_API_HOST_DEFAULT: 'https://api.dowjones.com',
       CONFIG_FILE_PATH_DEFAULT: path.join(__dirname, '../customerConfig.json')
     };
