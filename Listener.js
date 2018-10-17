@@ -48,9 +48,9 @@ class Listener {
       return true;
     }).catch((err) => {
       if (err.message) {
-        console.log(err.message);
+        console.error(err.message);
       } else {
-        console.log(JSON.stringify(err));
+        console.error(JSON.stringify(err));
       }
       return false;
     });
@@ -80,12 +80,12 @@ class Listener {
       const pubsubSub = data[0];
       pubsubSub.on('message', onMessage);
       pubsubSub.on('error', (subErr) => {
-        console.log(`On Subscription Error: ${subErr}`);
+        console.error(`On Subscription Error: ${subErr}`);
         pubsubSub.removeListener('message', onMessage);
         pubsubSub.on('message', onMessage);
       });
     }).catch((err) => {
-      console.log(`Error retrieving subscription from Google PubSub: ${err}`);
+      console.error(`Error retrieving subscription from Google PubSub: ${err}`);
     });
 
     console.log('Listeners for subscriptions have been configured, set and await message arrival.');
