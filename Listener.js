@@ -93,7 +93,7 @@ class Listener {
 
   checkDocCountExceeded(subscriptionId) {
     const streamDisabledMsg =
-      '\nOOPS! Looks like you\'ve exceeded the maximum number of documents received for your account (X).\n' +
+      '\nOOPS! Looks like you\'ve exceeded the maximum number of documents received for your account.\n' +
       'As such, no new documents will be added to your stream\'s queue.\n' +
       'However, you won\'t lose access to any documents that have already been added to the queue.\n' +
       'These will continue to be streamed to you.\n';
