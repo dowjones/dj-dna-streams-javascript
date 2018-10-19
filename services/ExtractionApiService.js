@@ -91,7 +91,7 @@ class ExtractionApiService {
         }
         return result.data.attributes;
       }).catch((error) => {
-        console.error('Error retrieving streaming credentials\n');
+        console.error('Error retrieving account info\n');
         throw error;
       });
     });
