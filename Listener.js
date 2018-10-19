@@ -99,7 +99,7 @@ class Listener {
       'However, you won\'t lose access to any documents that have already been added to the queue.\n' +
       'These will continue to be streamed to you.\n' +
       'Contact your account administrator with any questions or to upgrade your account limits.';
-    const interval = 30000;
+    const interval = 300000;
     this.extractionApiService.isStreamDisabled(subscriptionId).then((isDisabled) => {
       if (isDisabled) {
         console.error(streamDisabledMsg);
