@@ -29,8 +29,6 @@ class JwtService {
         method: 'POST',
         uri: this.oauthUrl,
         body: {
-          username: this.credentials.user_id,
-          password: this.credentials.password,
           scope: 'openid pib',
           grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
           access_token: initResponse.access_token,

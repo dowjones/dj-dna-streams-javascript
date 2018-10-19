@@ -74,7 +74,8 @@ class Listener {
 
     const pubsubSubscription = this.pubsubClient.subscription(subscriptionFullName);
 
-    this.checkDocCountExceeded(sub);
+    this.extractionApiService.getAccountInfo().then(accountInfo =>
+      this.checkDocCountExceeded(sub, accountInfo.max_allowed_document_extracts));
 
     pubsubSubscription.get().then((data) => {
       const pubsubSub = data[0];
@@ -91,21 +92,22 @@ class Listener {
     console.log('Listeners for subscriptions have been configured, set and await message arrival.');
   }
 
-  checkDocCountExceeded(subscriptionId) {
+  checkDocCountExceeded(subscriptionId, maxDocumentsReceived) {
     const streamDisabledMsg =
-      '\nOOPS! Looks like you\'ve exceeded the maximum number of documents received for your account.\n' +
+      `\nOOPS! Looks like you've exceeded the maximum number of documents received for your account (${maxDocumentsReceived}).\n` +
       'As such, no new documents will be added to your stream\'s queue.\n' +
       'However, you won\'t lose access to any documents that have already been added to the queue.\n' +
-      'These will continue to be streamed to you.\n';
+      'These will continue to be streamed to you.\n' +
+      'Contact your account administrator with any questions or to upgrade your account limits.';
     const interval = 30000;
     this.extractionApiService.isStreamDisabled(subscriptionId).then((isDisabled) => {
       if (isDisabled) {
         console.error(streamDisabledMsg);
       }
-      setTimeout(this.checkDocCountExceeded.bind(this), interval, subscriptionId);
+      setTimeout(this.checkDocCountExceeded.bind(this), interval, subscriptionId, maxDocumentsReceived);
     }).catch((err) => {
       console.error(err);
-      setTimeout(this.checkDocCountExceeded.bind(this), interval, subscriptionId);
+      setTimeout(this.checkDocCountExceeded.bind(this), interval, subscriptionId, maxDocumentsReceived);
     });
   }
 }

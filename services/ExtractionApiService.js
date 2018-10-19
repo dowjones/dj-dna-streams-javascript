@@ -74,6 +74,29 @@ class ExtractionApiService {
     });
   }
 
+  getAccountInfo() {
+    return this._initialize().then(() => {
+      const accountId = this.headers.Authorization ? this.credentials.client_id : this.headers['user-key'];
+      const options = {
+        method: 'GET',
+        uri: `${this.host}/${this.prefix}/accounts/${accountId}`,
+        headers: this.headers,
+        json: false
+      };
+
+      return request(options).then((response) => {
+        const result = JSON.parse(response);
+        if (!result.data || !result.data.attributes) {
+          throw new Error('Error: Unable to find account info');
+        }
+        return result.data.attributes;
+      }).catch((error) => {
+        console.error('Error retrieving streaming credentials\n');
+        throw error;
+      });
+    });
+  }
+
   isStreamDisabled(subscriptionId) {
     return this._initialize().then(() => {
       const disabledStatus = 'DOC_COUNT_EXCEEDED';
