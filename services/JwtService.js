@@ -14,8 +14,8 @@ class JwtService {
       method: 'POST',
       uri: this.oauthUrl,
       body: {
-        username: this.credentials.userId,
-        client_id: this.credentials.clientId,
+        username: this.credentials.user_id,
+        client_id: this.credentials.client_id,
         password: this.credentials.password,
         connection: 'service-account',
         grant_type: 'password',
@@ -33,16 +33,15 @@ class JwtService {
           grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
           access_token: initResponse.access_token,
           connection: 'service-account',
-          client_id: this.credentials.clientId,
+          client_id: this.credentials.client_id,
           assertion: initResponse.id_token
         },
         json: true
       };
 
-      return request(jwtReqOptions)
-        .then((response) => {
-          return response.token_type + ' ' + response.access_token;
-        });
+      return request(jwtReqOptions).then((response) => {
+        return `${response.token_type} ${response.access_token}`;
+      });
     };
 
     return request(initReqOptions)
@@ -50,13 +49,16 @@ class JwtService {
         return requestJwt(response);
       })
       .catch((error) => {
-        if (error.statusCode && (error.statusCode == 403 || error.statusCode == 401)) {
+        if (error.statusCode && (error.statusCode === 403 || error.statusCode === 401)) {
           throw new Error("Error: Unable to authenticate service account with given credentials:\n" +
-            `\tUser ID: ${this.credentials.userId}\n` +
-            `\tClient ID: ${this.credentials.clientId}\n` +
+            `\tUser ID: ${this.credentials.user_id}\n` +
+            `\tClient ID: ${this.credentials.client_id}\n` +
             `\tPassword: ${this.credentials.password}`);
-        } else throw error;
-      })
+        } else {
+          console.error('Error requesting JWT\n');
+          throw error;
+        }
+      });
   }
 }
 

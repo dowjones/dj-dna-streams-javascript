@@ -6,36 +6,39 @@ describe('Given Listener object', () => {
   let sandbox;
   let subscribeCalls = 0;
   const expectedUserKey = 'Lemon';
-  const pubSubStub =  {
-      subscription: () => {
+  const pubSubStub = {
+    subscription: () => {
       subscribeCalls += 1;
-        return {
-            get: () => Promise.resolve([{
-              on: (resultType, fn) => {}
-            }])
-        };
-      }
+      return {
+        get: () => Promise.resolve([{
+          on: (resultType, fn) => {}
+        }])
+      };
+    }
   };
 
 
-
-
   const expectedSubId = 'bar';
-  let getCredentialsStub = null;
-  let getConfigUtilStub = null;
+  let getStreamingCredentialsStub = null;
+  let getSubIdStub = null;
+  let checkDocCountExceededSub = null;
   const listener = new Listener(null, pubSubStub);
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
     process.env.USER_KEY = expectedUserKey;
 
-    getCredentialsStub = sandbox.stub(listener, 'getCredentials', () => {
+    getStreamingCredentialsStub = sandbox.stub(listener.extractionApiService, 'getStreamingCredentials', () => {
       return Promise.resolve({
         project_id: 'foo'
       });
     });
 
-    getConfigUtilStub = sandbox.stub(listener.configUtil, 'getSubscriptionId', function () {
+    checkDocCountExceededSub = sandbox.stub(listener, 'checkDocCountExceeded', function () {
+      return true;
+    });
+
+    getSubIdStub = sandbox.stub(listener.config, 'getSubscriptionId', function () {
       return expectedSubId;
     });
   });
@@ -58,8 +61,8 @@ describe('Given Listener object', () => {
 
     // Assert
     promise.then(() => {
-      expect(getConfigUtilStub.calledOnce).toBe(true);
-      expect(getCredentialsStub.calledOnce).toBe(true);
+      expect(getSubIdStub.calledOnce).toBe(true);
+      expect(getStreamingCredentialsStub.calledOnce).toBe(true);
       expect(subscribeCalls).toBe(1);
       done();
     });

@@ -1,11 +1,10 @@
-const path = require('path');
 const fs = require('fs');
 const _ = require('lodash');
 
 class ConfigFileUtil {
 
-  constructor() {
-    this.configFilePath = path.join(__dirname, '../customerConfig.json');
+  constructor(configFilePath) {
+    this.configFilePath = configFilePath;
     this.initialized = false;
   }
 
@@ -41,30 +40,17 @@ class ConfigFileUtil {
     return this.config.subscription_id;
   }
 
-  getServiceAccountId() {
-    if (!this.initialized) {
-      this.initialize();
-    }
-
-    return _.trim(this.config.service_account_id);
-  }
-
   getAccountCredentials() {
     if (!this.initialized) {
       this.initialize();
     }
 
-    let accountCreds;
-
-    if (this.config.user_id && this.config.client_id && this.config.password) {
-      accountCreds = {
-        userId: _.trim(this.config.user_id),
-        clientId: _.trim(this.config.client_id),
-        password: _.trim(this.config.password)
-      }
-    }
-
-    return accountCreds;
+    return {
+      user_key: _.trim(this.config.user_key),
+      user_id: _.trim(this.config.user_id),
+      client_id: _.trim(this.config.client_id),
+      password: _.trim(this.config.password)
+    };
   }
 }
 

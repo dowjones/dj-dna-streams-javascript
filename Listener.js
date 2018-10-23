@@ -1,25 +1,28 @@
 const PubSub = require('@google-cloud/pubsub');
-const ConfigUtil = require('./config/ConfigUtil');
-const fetchCredentials = require('./services/fetchCredentials');
-const path = require('path');
-const os = require('os');
+const Config = require('./config/Config');
+const ExtractionApiService = require('./services/ExtractionApiService');
 
 /** Class that allows you to listen to a number of Dow Jones PubSub subscriptions. This is a singleton. */
 class Listener {
 
   constructor(accountCredentials, pubsubClient) {
-    this.configUtil = new ConfigUtil(accountCredentials);
+    this.config = new Config(accountCredentials);
+    this.extractionApiService = new ExtractionApiService(
+      this.config.getExtractionApiHost(),
+      this.config.getAccountCredentials(),
+      this.config.getOauthUrl()
+    );
     this.pubsubClient = pubsubClient;
   }
 
-  initialize(credentials, pubSub) {
+  initialize(credentials) {
     this.projectId = credentials.project_id;
     this.pubsubClient = this.pubsubClient || new PubSub({
       projectId: this.projectId,
       credentials
     });
 
-    this.defaultSubscriptionId = this.configUtil.getSubscriptionId();
+    this.defaultSubscriptionId = this.config.getSubscriptionId();
   }
 
   /**
@@ -39,22 +42,18 @@ class Listener {
    * want to use the default.
    */
   listen(onMessageCallback, subscription) {
-    return this.getCredentials().then((credentials) => {
+    return this.extractionApiService.getStreamingCredentials().then((credentials) => {
       this.initialize(credentials);
       this.readyListener(onMessageCallback, subscription);
       return true;
     }).catch((err) => {
       if (err.message) {
-        console.log(err.message);
+        console.error(err.message);
       } else {
-        console.log(JSON.stringify(err));
+        console.error(JSON.stringify(err));
       }
       return false;
     });
-  }
-
-  getCredentials() {
-    return fetchCredentials(this.configUtil);
   }
 
   readyListener(onMessageCallback, subscriptionId) {
@@ -75,19 +74,41 @@ class Listener {
 
     const pubsubSubscription = this.pubsubClient.subscription(subscriptionFullName);
 
+    this.extractionApiService.getAccountInfo().then(accountInfo =>
+      this.checkDocCountExceeded(sub, accountInfo.max_allowed_document_extracts));
+
     pubsubSubscription.get().then((data) => {
       const pubsubSub = data[0];
       pubsubSub.on('message', onMessage);
       pubsubSub.on('error', (subErr) => {
-        console.log(`On Subscription Error: ${subErr}`);
+        console.error(`On Subscription Error: ${subErr}`);
         pubsubSub.removeListener('message', onMessage);
         pubsubSub.on('message', onMessage);
       });
     }).catch((err) => {
-      console.log(`Error retrieving subscription from Google PubSub: ${err}`);
+      console.error(`Error retrieving subscription from Google PubSub: ${err}`);
     });
 
     console.log('Listeners for subscriptions have been configured, set and await message arrival.');
+  }
+
+  checkDocCountExceeded(subscriptionId, maxDocumentsReceived) {
+    const streamDisabledMsg =
+      `\nOOPS! Looks like you've exceeded the maximum number of documents received for your account (${maxDocumentsReceived}).\n` +
+      'As such, no new documents will be added to your stream\'s queue.\n' +
+      'However, you won\'t lose access to any documents that have already been added to the queue.\n' +
+      'These will continue to be streamed to you.\n' +
+      'Contact your account administrator with any questions or to upgrade your account limits.';
+    const interval = 300000;
+    this.extractionApiService.isStreamDisabled(subscriptionId).then((isDisabled) => {
+      if (isDisabled) {
+        console.error(streamDisabledMsg);
+      }
+      setTimeout(this.checkDocCountExceeded.bind(this), interval, subscriptionId, maxDocumentsReceived);
+    }).catch((err) => {
+      console.error(err);
+      setTimeout(this.checkDocCountExceeded.bind(this), interval, subscriptionId, maxDocumentsReceived);
+    });
   }
 }
 
