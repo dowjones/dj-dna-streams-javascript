@@ -47,6 +47,7 @@ class ConfigFileUtil {
 
     return {
       user_key: _.trim(this.config.user_key),
+      service_account_id: _.trim(this.config.service_account_id),
       user_id: _.trim(this.config.user_id),
       client_id: _.trim(this.config.client_id),
       password: _.trim(this.config.password)

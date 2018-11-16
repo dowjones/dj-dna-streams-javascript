@@ -13,6 +13,7 @@ class Config {
       CLIENT_ID_ENV: 'CLIENT_ID',
       PASSWORD_ENV: 'PASSWORD',
       USER_KEY_ENV: 'USER_KEY',
+      SERVICE_ACCOUNT_ID_ENV: 'SERVICE_ACCOUNT_ID',
       SUBSCRIPTION_ID_ENV: 'SUBSCRIPTION_ID',
       EXTRACTION_API_HOST_ENV: 'EXTRACTION_API_HOST',
       EXTRACTION_API_HOST_DEFAULT: 'https://api.dowjones.com',
@@ -56,6 +57,11 @@ class Config {
       }
     }
 
+    // NOTE: "service_account_id" is a legacy, alternate name for "user_key" from the customer's perspective
+    if (!accountCreds.user_key && accountCreds.service_account_id) {
+      accountCreds.user_key = accountCreds.service_account_id;
+    }
+
     return this._areCredsSet(accountCreds) ? accountCreds : new Error(
       'Error: No account credentials specified\n' +
       'Must specify user_id, client_id, and password as args to Listener constructor, env vars, or via customerConfig.json file\n' +
@@ -68,12 +74,13 @@ class Config {
       user_id: process.env[this.Constants.USER_ID_ENV],
       client_id: process.env[this.Constants.CLIENT_ID_ENV],
       password: process.env[this.Constants.PASSWORD_ENV],
-      user_key: process.env[this.Constants.USER_KEY_ENV]
+      user_key: process.env[this.Constants.USER_KEY_ENV],
+      service_account_id: process.env[this.Constants.SERVICE_ACCOUNT_ID_ENV]
     };
   }
 
   _areCredsSet(accountCreds) {
-    return accountCreds && (accountCreds.user_key || (accountCreds.user_id && accountCreds.client_id && accountCreds.password));
+    return accountCreds && (accountCreds.user_key || accountCreds.service_account_id || (accountCreds.user_id && accountCreds.client_id && accountCreds.password));
   }
 }
 

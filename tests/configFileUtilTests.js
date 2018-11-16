@@ -6,6 +6,7 @@ const path = require('path');
 describe('configFileUtil', () => {
   let sandbox;
   const pathConfig = path.join(__dirname, './config/testCustomerConfig.json');
+  const serviceAccountIdPathConfig = path.join(__dirname, './config/testCustomerConfigServiceAccountId.json');
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
@@ -23,6 +24,19 @@ describe('configFileUtil', () => {
     // Act
     const creds = configFileUtil.getAccountCredentials();
     const userKey = creds.user_key;
+
+    // Assert
+    expect(userKey).toBe('foo');
+  });
+
+  it('should get the correct customer user key when set with service_account_id param.', () => {
+    // Arrange
+    const configFileUtil = new ConfigFileUtil();
+    configFileUtil.setConfigFilePath(serviceAccountIdPathConfig);
+
+    // Act
+    const creds = configFileUtil.getAccountCredentials();
+    const userKey = creds.service_account_id;
 
     // Assert
     expect(userKey).toBe('foo');
