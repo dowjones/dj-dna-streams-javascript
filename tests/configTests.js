@@ -49,6 +49,19 @@ describe('config', () => {
     expect(actualUserKey).toBe(expectedUserKey);
   });
 
+  it('should prioritize service_account_id from env over service account creds in config file', () => {
+    // Arrange
+    const expectedUserKey = '123A';
+    process.env[config.Constants.SERVICE_ACCOUNT_ID_ENV] = expectedUserKey;
+
+    // Act
+    const creds = config.getAccountCredentials();
+    const actualUserKey = creds.user_key;
+
+    // Assert
+    expect(actualUserKey).toBe(expectedUserKey);
+  });
+
   it('should prioritize credentials set thru env vars over config file', () => {
     // Arrange
     const expectedUserId = 'userId';
@@ -99,6 +112,20 @@ describe('config', () => {
     // Arrange
     const userKeyExpected = '123';
     const configSpecial = new Config({ user_key: userKeyExpected });
+
+    // Act
+    const accountCreds = configSpecial.getAccountCredentials();
+    const userKeyActual = accountCreds.user_key;
+
+    // Assert
+    expect(userKeyExpected).toBe(userKeyActual);
+    expect(accountCreds.user_id).toBe(undefined);
+  });
+
+  it('should prioritize service_account_id param over service account credentials in config file', () => {
+    // Arrange
+    const userKeyExpected = '123';
+    const configSpecial = new Config({ service_account_id: userKeyExpected });
 
     // Act
     const accountCreds = configSpecial.getAccountCredentials();
