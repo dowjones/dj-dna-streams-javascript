@@ -141,7 +141,7 @@ Step 2: Run the docker image
 
 ~~~
 docker run -it \
--e USER_KEY="<your user key"> \
+-e USER_KEY="<your user key>" \
 -e SUBSCRIPTION_ID="<your subscription ID>" \
 dj-dna-streaming-javascript
 ~~~
@@ -149,8 +149,8 @@ dj-dna-streaming-javascript
 ###### Client Credentials
 ~~~
 docker run -it \
--e USER_ID="<your user ID"> \
--e CLIENT_ID="<your client ID"> \
+-e USER_ID="<your user ID>" \
+-e CLIENT_ID="<your client ID>" \
 -e PASSWORD="<your password>" \
 -e SUBSCRIPTION_ID="<your subscription ID>" \
 dj-dna-streaming-javascript
