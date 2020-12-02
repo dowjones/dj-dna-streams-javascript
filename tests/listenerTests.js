@@ -28,7 +28,7 @@ describe('Given Listener object', () => {
     sandbox = sinon.sandbox.create();
     process.env.USER_KEY = expectedUserKey;
 
-    getStreamingCredentialsStub = sandbox.stub(listener.extractionApiService, 'getStreamingCredentials', () => {
+    getStreamingCredentialsStub = sandbox.stub(listener.apiService, 'getStreamingCredentials', () => {
       return Promise.resolve({
         project_id: 'foo'
       });
