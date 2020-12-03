@@ -21,7 +21,7 @@ describe('Given Listener object', () => {
   const expectedSubId = 'bar';
   let getStreamingCredentialsStub = null;
   let getSubIdStub = null;
-  let checkDocCountExceededSub = null;
+  let checkDocCountExceededStub = null;
   const listener = new Listener(null, pubSubStub);
 
   beforeEach(function () {
@@ -34,7 +34,7 @@ describe('Given Listener object', () => {
       });
     });
 
-    checkDocCountExceededSub = sandbox.stub(listener, 'checkDocCountExceeded', function () {
+    checkDocCountExceededStub = sandbox.stub(listener, 'checkDocCountExceeded', function () {
       return true;
     });
 

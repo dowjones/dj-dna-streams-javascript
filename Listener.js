@@ -1,13 +1,13 @@
 const PubSub = require('@google-cloud/pubsub');
 const Config = require('./config/Config');
-const apiService = require('./services/apiService');
+const ApiService = require('./services/ApiService');
 
 /** Class that allows you to listen to a number of Dow Jones PubSub subscriptions. This is a singleton. */
 class Listener {
 
   constructor(accountCredentials, pubsubClient) {
     this.config = new Config(accountCredentials);
-    this.apiService = new apiService(
+    this.apiService = new ApiService(
       this.config.getApiHost(),
       this.config.getAccountCredentials(),
       this.config.getOauthUrl()

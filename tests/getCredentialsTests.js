@@ -19,7 +19,7 @@ describe('getCredentials', () => {
       method: 'GET',
       uri: 'http://localhost:8080/alpha/accounts/streaming-credentials',
       headers: {
-        'user-key': '0e314c38802b8ae800bcebed7bace8f9'
+        'user-key': 'bar'
       },
       json: true
     };
