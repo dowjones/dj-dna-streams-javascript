@@ -113,6 +113,6 @@
 - [changed] - Updated demo code to accept environment variable that, when used, reduces the output volume.
 - [changed] - Added test shell script './test/test_run_docker.sh' for testing Docker and streams; to be used only with DNA Engineering assistance.  
 
-
-
-
+1.1.2 / 2020-12-07
+==================
+- [changed] - Removed references to depreciated Extraction API service, now you may manually specify your API host by exporting API_HOST instead of EXTRACTION_API_HOST
