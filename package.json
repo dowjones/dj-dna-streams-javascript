@@ -18,7 +18,7 @@
     "@google-cloud/pubsub": "^0.18.0",
     "gulp": "4.0.0",
     "gulp-jasmine": "2.4.2",
-    "lodash": "4.17.11",
+    "lodash": "4.17.19",
     "request": "2.88.0",
     "request-promise": "4.2.2"
   },
