@@ -1,54 +1,54 @@
 const sinon = require('sinon');
-const ExtractionApiService = require('../services/ExtractionApiService');
+const ApiService = require('../services/ApiService');
 
-describe('extraction API service', () => {
+describe('API service', () => {
   let sandbox;
   let getServiceAccountHeadersStub;
-  const extractionApiService = new ExtractionApiService();
+  const apiService = new ApiService();
   const serviceAccountHeaders = { Authorization: 'Bearer jwt' };
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
-    getServiceAccountHeadersStub = sandbox.stub(extractionApiService, '_getServiceAccountHeaders', () => {
+    getServiceAccountHeadersStub = sandbox.stub(apiService, '_getServiceAccountHeaders', () => {
       return Promise.resolve(serviceAccountHeaders);
     });
   });
 
   afterEach(() => {
     sandbox.restore();
-    extractionApiService.headers = null;
-    extractionApiService.prefix = null;
+    apiService.headers = null;
+    apiService.prefix = null;
   });
 
   it('should initialize correctly given service account credentials', () => {
     // Arrange
-    extractionApiService.credentials = {
+    apiService.credentials = {
       user_id: 'user_id',
       client_id: 'client_id',
       password: 'password'
     };
 
     // Act
-    extractionApiService._initialize().then(() => {
+    apiService._initialize().then(() => {
 
       // Assert
       expect(getServiceAccountHeadersStub.calledOnce).toBe(true);
-      expect(extractionApiService.headers).toEqual(serviceAccountHeaders);
-      expect(extractionApiService.prefix).toBe('dna');
+      expect(apiService.headers).toEqual(serviceAccountHeaders);
+      expect(apiService.prefix).toBe('dna');
     });
   });
 
   it('should initialize correctly given user key credentials', () => {
     // Arrange
     const headersExpected = { 'user-key': 'test_user_key' };
-    extractionApiService.credentials = { user_key: 'test_user_key' };
+    apiService.credentials = { user_key: 'test_user_key' };
 
     // Act
-    extractionApiService._initialize().then(() => {
+    apiService._initialize().then(() => {
 
       // Assert
-      expect(extractionApiService.headers.user_key).toEqual(headersExpected.user_key);
-      expect(extractionApiService.prefix).toBe('alpha');
+      expect(apiService.headers.user_key).toEqual(headersExpected.user_key);
+      expect(apiService.prefix).toBe('alpha');
     });
   });
 
@@ -60,8 +60,8 @@ describe('extraction API service', () => {
     const expectedStreamIdB = 'dj-dna-qos-streamB';
 
     // Act
-    const actualStreamIdA = extractionApiService._extractStreamFromSub(subIdA);
-    const actualStreamIdB = extractionApiService._extractStreamFromSub(subIdB);
+    const actualStreamIdA = apiService._extractStreamFromSub(subIdA);
+    const actualStreamIdB = apiService._extractStreamFromSub(subIdB);
 
     // Assert
     expect(actualStreamIdA).toBe(expectedStreamIdA);

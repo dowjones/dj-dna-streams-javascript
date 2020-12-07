@@ -1,14 +1,14 @@
 const PubSub = require('@google-cloud/pubsub');
 const Config = require('./config/Config');
-const ExtractionApiService = require('./services/ExtractionApiService');
+const ApiService = require('./services/ApiService');
 
 /** Class that allows you to listen to a number of Dow Jones PubSub subscriptions. This is a singleton. */
 class Listener {
 
   constructor(accountCredentials, pubsubClient) {
     this.config = new Config(accountCredentials);
-    this.extractionApiService = new ExtractionApiService(
-      this.config.getExtractionApiHost(),
+    this.apiService = new ApiService(
+      this.config.getApiHost(),
       this.config.getAccountCredentials(),
       this.config.getOauthUrl()
     );
@@ -42,7 +42,7 @@ class Listener {
    * want to use the default.
    */
   listen(onMessageCallback, subscription) {
-    return this.extractionApiService.getStreamingCredentials().then((credentials) => {
+    return this.apiService.getStreamingCredentials().then((credentials) => {
       this.initialize(credentials);
       this.readyListener(onMessageCallback, subscription);
       return true;
@@ -74,7 +74,7 @@ class Listener {
 
     const pubsubSubscription = this.pubsubClient.subscription(subscriptionFullName);
 
-    this.extractionApiService.getAccountInfo().then(accountInfo =>
+    this.apiService.getAccountInfo().then(accountInfo =>
       this.checkDocCountExceeded(sub, accountInfo.max_allowed_document_extracts));
 
     pubsubSubscription.get().then((data) => {
@@ -100,7 +100,7 @@ class Listener {
       'These will continue to be streamed to you.\n' +
       'Contact your account administrator with any questions or to upgrade your account limits.';
     const interval = 300000;
-    this.extractionApiService.isStreamDisabled(subscriptionId).then((isDisabled) => {
+    this.apiService.isStreamDisabled(subscriptionId).then((isDisabled) => {
       if (isDisabled) {
         console.error(streamDisabledMsg);
       }

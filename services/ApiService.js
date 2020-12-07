@@ -1,7 +1,7 @@
 const request = require('request-promise');
 const JwtService = require('./JwtService');
 
-class ExtractionApiService {
+class ApiService {
 
   constructor(host, credentials, oauthUrl) {
     this.host = host;
@@ -128,4 +128,4 @@ class ExtractionApiService {
   }
 }
 
-module.exports = ExtractionApiService;
+module.exports = ApiService;

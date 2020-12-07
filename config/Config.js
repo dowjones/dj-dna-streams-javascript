@@ -15,8 +15,8 @@ class Config {
       USER_KEY_ENV: 'USER_KEY',
       SERVICE_ACCOUNT_ID_ENV: 'SERVICE_ACCOUNT_ID',
       SUBSCRIPTION_ID_ENV: 'SUBSCRIPTION_ID',
-      EXTRACTION_API_HOST_ENV: 'EXTRACTION_API_HOST',
-      EXTRACTION_API_HOST_DEFAULT: 'https://api.dowjones.com',
+      API_HOST_ENV: 'API_HOST',
+      API_HOST_DEFAULT: 'https://api.dowjones.com',
       CONFIG_FILE_PATH_DEFAULT: path.join(__dirname, '../customerConfig.json')
     };
 
@@ -28,9 +28,9 @@ class Config {
     this._configFileUtil = new ConfigFileUtil(configFilePath);
   }
 
-  getExtractionApiHost() {
-    const extractionApiHost = process.env[this.Constants.EXTRACTION_API_HOST_ENV];
-    return extractionApiHost || this.Constants.EXTRACTION_API_HOST_DEFAULT;
+  getApiHost() {
+    const apiHost = process.env[this.Constants.API_HOST_ENV];
+    return apiHost || this.Constants.API_HOST_DEFAULT;
   }
 
   getOauthUrl() {
