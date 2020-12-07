@@ -21,6 +21,7 @@ describe('Given Listener object', () => {
   const expectedSubId = 'bar';
   let getStreamingCredentialsStub = null;
   let getSubIdStub = null;
+  let getAccountInfoStub = null;
   let checkDocCountExceededStub = null;
   const listener = new Listener(null, pubSubStub);
 
@@ -28,14 +29,20 @@ describe('Given Listener object', () => {
     sandbox = sinon.sandbox.create();
     process.env.USER_KEY = expectedUserKey;
 
-    getStreamingCredentialsStub = sandbox.stub(listener.apiService, 'getStreamingCredentials', () => {
+    getAccountInfoStub = sandbox.stub(listener.apiService, 'getAccountInfo', function () {
       return Promise.resolve({
-        project_id: 'foo'
+        max_allowed_document_extracts: 9999
       });
     });
 
     checkDocCountExceededStub = sandbox.stub(listener, 'checkDocCountExceeded', function () {
       return true;
+    });
+
+    getStreamingCredentialsStub = sandbox.stub(listener.apiService, 'getStreamingCredentials', () => {
+      return Promise.resolve({
+        project_id: 'foo'
+      });
     });
 
     getSubIdStub = sandbox.stub(listener.config, 'getSubscriptionId', function () {
@@ -63,6 +70,9 @@ describe('Given Listener object', () => {
     promise.then(() => {
       expect(getSubIdStub.calledOnce).toBe(true);
       expect(getStreamingCredentialsStub.calledOnce).toBe(true);
+      expect(getAccountInfoStub.calledOnce).toBe(true);
+      expect(checkDocCountExceededStub.calledOnce).toBe(true);
+
       expect(subscribeCalls).toBe(1);
       done();
     });
