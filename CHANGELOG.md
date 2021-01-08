@@ -116,3 +116,8 @@
 1.1.2 / 2020-12-07
 ==================
 - [changed] - Removed references to depreciated Extraction API service, now you may manually specify your API host by exporting API_HOST instead of EXTRACTION_API_HOST
+
+1.2.0 / 2020-01-08
+==================
+- [changed] - updated to latest dependencies
+- [changed] - removed support of JWT authentication
