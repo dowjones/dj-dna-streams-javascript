@@ -9,8 +9,7 @@ class Listener {
     this.config = new Config(accountCredentials);
     this.apiService = new ApiService(
       this.config.getApiHost(),
-      this.config.getAccountCredentials(),
-      this.config.getOauthUrl()
+      this.config.getAccountCredentials()
     );
     this.pubsubClient = pubsubClient;
   }

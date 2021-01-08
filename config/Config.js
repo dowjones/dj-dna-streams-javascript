@@ -7,13 +7,7 @@ class Config {
     this.credentials = credentials;
 
     this.Constants = {
-      OAUTH_URL_ENV: 'OAUTH_URL',
-      OAUTH_URL_DEFAULT: 'https://accounts.dowjones.com/oauth2/v1/token',
-      USER_ID_ENV: 'USER_ID',
-      CLIENT_ID_ENV: 'CLIENT_ID',
-      PASSWORD_ENV: 'PASSWORD',
       USER_KEY_ENV: 'USER_KEY',
-      SERVICE_ACCOUNT_ID_ENV: 'SERVICE_ACCOUNT_ID',
       SUBSCRIPTION_ID_ENV: 'SUBSCRIPTION_ID',
       API_HOST_ENV: 'API_HOST',
       API_HOST_DEFAULT: 'https://api.dowjones.com',
@@ -31,11 +25,6 @@ class Config {
   getApiHost() {
     const apiHost = process.env[this.Constants.API_HOST_ENV];
     return apiHost || this.Constants.API_HOST_DEFAULT;
-  }
-
-  getOauthUrl() {
-    const oauthUrl = process.env[this.Constants.OAUTH_URL_ENV];
-    return oauthUrl || this.Constants.OAUTH_URL_DEFAULT;
   }
 
   getSubscriptionId() {
@@ -57,30 +46,21 @@ class Config {
       }
     }
 
-    // NOTE: "service_account_id" is a legacy, alternate name for "user_key" from the customer's perspective
-    if (!accountCreds.user_key && accountCreds.service_account_id) {
-      accountCreds.user_key = accountCreds.service_account_id;
-    }
-
     return this._areCredsSet(accountCreds) ? accountCreds : new Error(
       'Error: No account credentials specified\n' +
-      'Must specify user_id, client_id, and password as args to Listener constructor, env vars, or via customerConfig.json file\n' +
+      'Must specify user_key as args to Listener constructor, env vars, or via customerConfig.json file\n' +
       'See dj-dna-streaming-javascript README.md'
     );
   }
 
   _initCredsFromEnv() {
     return {
-      user_id: process.env[this.Constants.USER_ID_ENV],
-      client_id: process.env[this.Constants.CLIENT_ID_ENV],
-      password: process.env[this.Constants.PASSWORD_ENV],
-      user_key: process.env[this.Constants.USER_KEY_ENV],
-      service_account_id: process.env[this.Constants.SERVICE_ACCOUNT_ID_ENV]
+      user_key: process.env[this.Constants.USER_KEY_ENV]
     };
   }
 
   _areCredsSet(accountCreds) {
-    return accountCreds && (accountCreds.user_key || accountCreds.service_account_id || (accountCreds.user_id && accountCreds.client_id && accountCreds.password));
+    return accountCreds && accountCreds.user_key;
   }
 }
 

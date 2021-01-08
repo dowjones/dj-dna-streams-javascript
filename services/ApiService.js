@@ -1,12 +1,10 @@
 const request = require('request-promise');
-const JwtService = require('./JwtService');
 
 class ApiService {
 
-  constructor(host, credentials, oauthUrl) {
+  constructor(host, credentials) {
     this.host = host;
     this.credentials = credentials;
-    this.oauthUrl = oauthUrl;
   }
 
   // the reason this is outside the constructor is that getting headers is async
@@ -15,12 +13,6 @@ class ApiService {
     if (this.headers && this.prefix) {
       // already initialized
       return Promise.resolve(true);
-    } else if (this._isServiceAccountAuth()) {
-      return this._getServiceAccountHeaders().then((headers) => {
-        this.headers = headers;
-        this.prefix = 'dna';
-        return true;
-      });
     } else if (this.credentials && this.credentials.user_key) {
       this.headers = { 'user-key': this.credentials.user_key };
       this.prefix = 'alpha';
@@ -28,23 +20,10 @@ class ApiService {
     } else {
       return Promise.reject(new Error(
         'Error: No account credentials specified\n' +
-        'Must specify user_id, client_id, and password as args to Listener constructor, env vars, or via customerConfig.json file\n' +
+        'Must specify user_key as args to Listener constructor, env vars, or via customerConfig.json file\n' +
         'See dj-dna-streaming-javascript README.md'
       ));
     }
-  }
-
-  _isServiceAccountAuth() {
-    return this.credentials && this.credentials.user_id && this.credentials.client_id && this.credentials.password;
-  }
-
-  _getServiceAccountHeaders() {
-    const jwtService = new JwtService(this.credentials, this.oauthUrl);
-    return jwtService.fetchJwt().then((jwt) => {
-      return {
-        Authorization: jwt
-      };
-    });
   }
 
   getStreamingCredentials() {
