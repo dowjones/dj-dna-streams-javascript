@@ -1,4 +1,4 @@
-const PubSub = require('@google-cloud/pubsub');
+const {PubSub} = require('@google-cloud/pubsub');
 const Config = require('./config/Config');
 const ApiService = require('./services/ApiService');
 
@@ -9,8 +9,7 @@ class Listener {
     this.config = new Config(accountCredentials);
     this.apiService = new ApiService(
       this.config.getApiHost(),
-      this.config.getAccountCredentials(),
-      this.config.getOauthUrl()
+      this.config.getAccountCredentials()
     );
     this.pubsubClient = pubsubClient;
   }

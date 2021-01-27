@@ -13,13 +13,10 @@ npm install git+https://git@github.com/dowjones/dj-dna-streams-javascript.git --
 
 Alternatively you can simply check out this project from Git.
 
-#### Authentication Options
-There are two credential types that can be used.
+#### Authentication
 
-Option 1. User Key
+User Key
    
-Option 2. Client Credentials (user_id, client_id, password)
-
 #### Configuring The App
 
 There are three ways to pass configuration variables to the app. Please note that environment variables (Option 1) will override values provided in the `customerConfig.json` file (Option 2).  
@@ -35,22 +32,6 @@ Option 1. Set environment variables.
   **SUBSCRIPTION_ID**
      This environment variable holds the subscription ID.   
    
-###### Client Credentials
-
-  **USER_ID**
-    Dow Jones provided service account user ID.
-
-  **CLIENT_ID**
-    Dow Jones provided service account client ID.
-
-  **PASSWORD**
-    Dow Jones provided service account password.
-   
-  **SUBSCRIPTION_ID**
-    This environment variable holds the subscription ID.
-
-    Note that USER_ID, CLIENT_ID, and PASSWORD will all need to be set in order to pass credentials to the app in this way. If any one of these is not set, any others that are set will be ignored.
-
 Option 2. Modify the 'customerConfig.json' file. In this project's root you will find the 'customerConfig.json' file. Add your credentials and subscription ID. Ensure your additions follow the JSON data format conventions.
 
 ###### User Key
@@ -62,20 +43,9 @@ Option 2. Modify the 'customerConfig.json' file. In this project's root you will
 }
 ```
 
-###### Client Credentials
-
-```
-{
-  "user_id": "<Dow Jones provided service account user ID>",
-  "client_id": "<Dow Jones provided service account client ID>",
-  "password": "<Dow Jones provided service account password>",
-  "subscription_id": "<Subscription ID returned upon stream creation>"
-}
-```
-
 or
 
-Option 3: Passing values as function arguments. Specifically you can pass either the service account credentials and/or subscription ID. When you start a listener you can pass the service account crendentials to the Listener constructor as an object with the fields "user_id", "client_id", and "password", like so:
+Option 3: Passing values as function arguments. Specifically you can pass either the service account credentials and/or subscription ID. When you start a listener you can pass the service account crendentials to the Listener constructor as an object with the field "user_key", like so:
 
 ~~~~
   var Listener = require('dj-dna-streaming-javascript').Listener;
@@ -88,13 +58,7 @@ Option 3: Passing values as function arguments. Specifically you can pass either
     /**
      User Key
     */
-    user_key: "<YOUR USER KEY HERE>",
-    /**
-     Client Credentials
-    */
-    user_id: "<YOUR USER ID HERE>",
-    client_id: "<YOUR CLIENT ID HERE>",
-    password: "<YOUR PASSWORD HERE>",
+    user_key: "<YOUR USER KEY HERE>"
   });
   listener.listen(onMessageCallback);
 ~~~~
