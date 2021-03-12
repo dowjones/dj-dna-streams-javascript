@@ -68,8 +68,8 @@ class Listener {
     console.log(`Listening to subscription: ${subscriptionFullName}`);
 
     const onMessage = (msg) => {
+      onMessageCallback(msg);
       msg.ack();
-      return onMessageCallback(msg);
     };
 
     const pubsubSubscription = this.pubsubClient.subscription(subscriptionFullName);
