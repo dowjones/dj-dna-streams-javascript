@@ -40,10 +40,10 @@ class Listener {
    * Leave as null or undefined if you
    * want to use the default.
    */
-  listen(onMessageCallback, subscription) {
+  listen(onMessageCallback, subscription, userErrorHandling = false) {
     return this.apiService.getStreamingCredentials().then((credentials) => {
       this.initialize(credentials);
-      this.readyListener(onMessageCallback, subscription);
+      this.readyListener(onMessageCallback, subscription, userErrorHandling);
       return true;
     }).catch((err) => {
       if (err.message) {
@@ -55,7 +55,7 @@ class Listener {
     });
   }
 
-  readyListener(onMessageCallback, subscriptionId) {
+  readyListener(onMessageCallback, subscriptionId, userErrorHandling) {
     const sub = subscriptionId || this.defaultSubscriptionId;
 
     if (!sub || sub.length <= 0) {
@@ -66,10 +66,27 @@ class Listener {
 
     console.log(`Listening to subscription: ${subscriptionFullName}`);
 
-    const onMessage = (msg) => {
-      onMessageCallback(msg);
-      msg.ack();
+    const onMessageTryCatch = (msg) => {
+      try {
+        onMessageCallback(msg);
+        msg.ack();
+      } catch (err) {
+        console.error(`Error from callback: ${err}\n`);
+        msg.nack();
+      }
     };
+
+    const onMessageUserHandling = (msg) => {
+      let callback = onMessageCallback(msg);
+      if (!callback.err) {
+          msg.ack();
+        } else {
+        console.error(`Error from callback: ${callback.err}\n`);
+        msg.nack();
+        }
+      };
+
+    const onMessage = (userErrorHandling) ? onMessageUserHandling : onMessageTryCatch;
 
     const pubsubSubscription = this.pubsubClient.subscription(subscriptionFullName);
 
