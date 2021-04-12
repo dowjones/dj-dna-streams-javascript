@@ -6,7 +6,8 @@
   "scripts": {
     "test": "gulp test",
     "test-cont": "gulp test-cont",
-    "demo": "node ./demo/index.js"
+    "demo": "node ./demo/index.js",
+    "demo_error_handling": "node ./demo_error_handling/index.js"
   },
   "repository": {
     "type": "git",
