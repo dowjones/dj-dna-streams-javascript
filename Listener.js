@@ -47,7 +47,6 @@ class Listener {
       this.readyListener(onMessageCallback, subscription, userErrorHandling);
       return true;
     }).catch((err) => {
-      console.error(`ENCOUNTERED ERROR: `)
       if (err.message) {
         console.error(err.message);
       } else {
