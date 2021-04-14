@@ -73,6 +73,7 @@ class Listener {
       } catch (err) {
         console.error(`Error from callback: ${err}\n`);
         msg.nack();
+        process.exit(1);
       }
     };
 
@@ -83,6 +84,7 @@ class Listener {
         } else {
         console.error(`Error from callback: ${callback.err}\n`);
         msg.nack();
+        process.exit(1);
         }
       };
 
