@@ -138,19 +138,19 @@ The following is some very basic code. Use it to listen to a DNA subscription. I
 
 ###### Error Handling
 
-If your callback fails, the message will be nack'd but the listener will continue until you manually stop it. If you wish to write your own error handling for callbacks then set the `userErrorHandling` parameter to true. This allows you to return an err object which will force the callback handler to nack messages. The following is a very basic example illustrating how this may work.
+If your callback fails, the message will be nack'd and the listener will rethrow the error. If you wish to write your own error handling for callbacks then set the `userErrorHandling` parameter to true. This allows you to use an error handler callback to force the callback handler to nack messages. The following is a very basic example illustrating how this may work.
 
 ~~~~
   var Listener = require('dj-dna-streaming-javascript').Listener;
  
-  var onMessageCallback = function(msg) {
+  var onMessageCallback = function((msg, handleErr) {
      let err = null;
      try {
       console.log('One incoming message:' + JSON.stringify(msg.data));
       } catch (e) {
         err = e
       };
-    return {err}
+    handleErr(err)
   };
  
   const listener = new Listener();

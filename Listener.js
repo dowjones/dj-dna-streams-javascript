@@ -73,20 +73,21 @@ class Listener {
       } catch (err) {
         console.error(`Error from callback: ${err}\n`);
         msg.nack();
-        process.exit(1);
+        throw err;
       }
     };
 
     const onMessageUserHandling = (msg) => {
-      let callback = onMessageCallback(msg);
-      if (!callback.err) {
-          msg.ack();
+      onMessageCallback(msg, err => {
+        if (err) {
+          console.error(`Error from callback: ${err}`);
+          msg.nack();
+          throw err;
         } else {
-        console.error(`Error from callback: ${callback.err}\n`);
-        msg.nack();
-        process.exit(1);
+          msg.ack();
         }
-      };
+      });
+    }
 
     const onMessage = (userErrorHandling) ? onMessageUserHandling : onMessageTryCatch;
 

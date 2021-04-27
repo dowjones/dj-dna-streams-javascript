@@ -2,7 +2,7 @@ const Listener = require('../Listener');
 
 const quietDemo = process.env.QUIET_DEMO;
 
-const onMessageCallback = (msg) => {
+const onMessageCallback = (msg, handleErr) => {
   let err = null;
   try {
     let message = `${msg.data}`;
@@ -14,7 +14,7 @@ const onMessageCallback = (msg) => {
    err = e
   };
   
-  return {err}
+  handleErr(err)
 };
 
 const listener = new Listener();
