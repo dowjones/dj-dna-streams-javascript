@@ -123,10 +123,8 @@ class Listener {
       if (isDisabled) {
         console.error(streamDisabledMsg);
       }
-      setTimeout(this.checkDocCountExceeded.bind(this), interval, subscriptionId, maxDocumentsReceived);
     }).catch((err) => {
       console.error(err);
-      setTimeout(this.checkDocCountExceeded.bind(this), interval, subscriptionId, maxDocumentsReceived);
     });
   }
 }
