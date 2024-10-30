@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb/base"],
+  "extends": ["eslint:recommended", "prettier"],
   "rules": {
     "no-console": "off",
     "max-len": [2, {"code": 205, "tabWidth": 4, "ignoreUrls": true}],

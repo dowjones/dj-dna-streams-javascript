@@ -40,10 +40,10 @@ class Listener {
    * Leave as null or undefined if you
    * want to use the default.
    */
-  listen(onMessageCallback, subscription, userErrorHandling = false) {
+  listen(onMessageCallback, subscription, usingAsyncFunction = true) {
     return this.apiService.getStreamingCredentials().then((credentials) => {
       this.initialize(credentials);
-      this.readyListener(onMessageCallback, subscription, userErrorHandling);
+      this.readyListener(onMessageCallback, subscription, usingAsyncFunction);
       return true;
     }).catch((err) => {
       if (err.message) {
@@ -55,7 +55,7 @@ class Listener {
     });
   }
 
-  readyListener(onMessageCallback, subscriptionId, userErrorHandling) {
+  readyListener(onMessageCallback, subscriptionId, usingAsyncFunction) {
     const sub = subscriptionId || this.defaultSubscriptionId;
 
     if (!sub || sub.length <= 0) {
@@ -66,37 +66,36 @@ class Listener {
 
     console.log(`Listening to subscription: ${subscriptionFullName}`);
 
-    const onMessageTryCatch = (msg) => {
-      try {
-        onMessageCallback(msg);
-        msg.ack();
-      } catch (err) {
-        console.error(`Error from callback: ${err}\n`);
-        msg.nack();
-        throw err;
-      }
-    };
+    const onMessagePromise = (msg) => {
+      onMessageCallback(msg)
+          .then(() => {
+            msg.ack();
+          })
+          .catch(err => {
+            console.error(`On callback ${err.message}`);
+            msg.nack();
+          });
+    }
 
     const onMessageUserHandling = (msg) => {
       onMessageCallback(msg, err => {
         if (err) {
           console.error(`Error from callback: ${err}`);
           msg.nack();
-          throw err;
         } else {
           msg.ack();
         }
       });
     }
 
-    const onMessage = (userErrorHandling) ? onMessageUserHandling : onMessageTryCatch;
+    const onMessage = (usingAsyncFunction) ? onMessagePromise : onMessageUserHandling;
 
-    const pubsubSubscription = this.pubsubClient.subscription(subscriptionFullName);
+    this.pubsubSubscription = this.pubsubClient.subscription(subscriptionFullName);
 
     this.apiService.getAccountInfo().then(accountInfo =>
       this.checkDocCountExceeded(sub, accountInfo.max_allowed_document_extracts));
 
-    pubsubSubscription.get().then((data) => {
+    this.pubsubSubscription.get().then((data) => {
       const pubsubSub = data[0];
       pubsubSub.on('message', onMessage);
       pubsubSub.on('error', (subErr) => {
@@ -108,6 +107,16 @@ class Listener {
       console.error(`Error retrieving subscription from Google PubSub: ${err}`);
     });
 
+    const terminationHandler = () => {
+      if (this.pubsubSubscription.isOpen) {
+        console.log('A interruption signal received, closing the stream');
+        this.pubsubSubscription.close();
+      }
+    }
+
+    process.on('SIGINT', terminationHandler);
+    process.on('SIGTERM', terminationHandler);
+
     console.log('Listeners for subscriptions have been configured, set and await message arrival.');
   }
 
@@ -118,7 +127,6 @@ class Listener {
       'However, you won\'t lose access to any documents that have already been added to the queue.\n' +
       'These will continue to be streamed to you.\n' +
       'Contact your account administrator with any questions or to upgrade your account limits.';
-    const interval = 300000;
     this.apiService.isStreamDisabled(subscriptionId).then((isDisabled) => {
       if (isDisabled) {
         console.error(streamDisabledMsg);
@@ -126,6 +134,19 @@ class Listener {
     }).catch((err) => {
       console.error(err);
     });
+  }
+
+  closeListener() {
+    if (this.pubsubSubscription) {
+      if (this.pubsubSubscription.isOpen) {
+        this.pubsubSubscription.close();
+        console.log('Closing the listener.')
+      } else {
+        console.warn("The listener is already closed.");
+      }
+    } else {
+      console.warn("There's no opened subscription to close. Call listen method first.");
+    }
   }
 }
 

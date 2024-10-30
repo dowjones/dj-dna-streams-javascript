@@ -4,5 +4,5 @@ node_modules
 /DowJonesDNA.json
 /r-d.sh
 /fix_git.sh
-
+.envrc
 .vscode/**
