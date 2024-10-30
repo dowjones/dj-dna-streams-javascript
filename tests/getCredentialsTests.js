@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const sinon = require('sinon');
 
-const request = require('request-promise');
+const fetch = require('node-fetch');
 
 describe('getCredentials', () => {
   let sandbox;
@@ -17,14 +17,15 @@ describe('getCredentials', () => {
   it('foo.', function (done) {
     const options = {
       method: 'GET',
-      uri: 'http://localhost:8080/alpha/accounts/streaming-credentials',
       headers: {
         'user-key': 'bar'
       },
       json: true
     };
 
-    request(options)
+    const uri = 'http://localhost:8080/alpha/accounts/streaming-credentials';
+
+    fetch(uri, options)
       .then(() => {
         done();
         // Request was successful, use the response object at will
