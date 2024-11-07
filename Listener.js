@@ -107,16 +107,6 @@ class Listener {
       console.error(`Error retrieving subscription from Google PubSub: ${err}`);
     });
 
-    const terminationHandler = () => {
-      if (this.pubsubSubscription.isOpen) {
-        console.log('A interruption signal received, closing the stream');
-        this.pubsubSubscription.close();
-      }
-    }
-
-    process.on('SIGINT', terminationHandler);
-    process.on('SIGTERM', terminationHandler);
-
     console.log('Listeners for subscriptions have been configured, set and await message arrival.');
   }
 

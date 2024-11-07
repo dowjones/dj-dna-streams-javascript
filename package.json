@@ -4,8 +4,7 @@
   "description": "Client to consume Dow Jones DNA subscription events",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test",
-    "test-cont": "gulp test-cont",
+    "test": "npx jasmine",
     "demo": "node ./demo/index.js"
   },
   "repository": {
@@ -16,8 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "@google-cloud/pubsub": "^4.8.0",
-    "gulp": "5.0.0",
-    "gulp-jasmine": "4.0.0",
+    "jasmine": "5.4.0",
     "lodash": "4.17.21",
     "node-fetch": "2.7.0"
   },
