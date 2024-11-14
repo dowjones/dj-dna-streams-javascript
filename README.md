@@ -154,6 +154,51 @@ Write a callback function with two parameters, the first one being the message. 
   listener.listen(onMessageCallback, null, false);
 ~~~~
 
+### Shutting down the listener
+
+The listener have a method to stop receiving new messages. After a set time you can call this method or you can add a termination signal listener to call it and close cleanly the listener.
+
+#### Waiting a set time
+
+~~~~
+  const Listener = require('dj-dna-streaming-javascript').Listener;
+ 
+  const onMessageCallback = async function(msg) {
+     console.log('One incoming message:' + JSON.stringify(msg.data));
+  };
+ 
+  const listener = new Listener();
+  listener.listen(onMessageCallback);
+  
+  // Listen to messages for 10 seconds
+  
+  setTimeout(() => {
+    listener.closeListener();
+  }, 10000);
+~~~~
+
+#### Ading a listener to the SIGTERM or SIGINT siganls
+
+~~~~
+  const Listener = require('dj-dna-streaming-javascript').Listener;
+ 
+  const onMessageCallback = async function(msg) {
+     console.log('One incoming message:' + JSON.stringify(msg.data));
+  };
+ 
+  const listener = new Listener();
+  listener.listen(onMessageCallback);
+
+  // This method calls the listener's closeListener method.
+  const terminationHandler = () => {
+    listener.closeListener();
+  };
+
+  // Adding this method as a handler of SIGTERM or SIGINT
+  process.on('SIGINT', terminationHandler);
+  process.on('SIGTERM', terminationHandler);
+~~~~
+
 ### Migrating from a synchronous callback function
 
 The latest version of the client require the callback function to conform to the callback pattern or using a function returning a Promise or Theanable.
