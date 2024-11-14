@@ -177,7 +177,7 @@ The listener have a method to stop receiving new messages. After a set time you 
   }, 10000);
 ~~~~
 
-#### Ading a listener to the SIGTERM or SIGINT siganls
+#### Ading a listener to the SIGTERM or SIGINT signals
 
 ~~~~
   const Listener = require('dj-dna-streaming-javascript').Listener;
