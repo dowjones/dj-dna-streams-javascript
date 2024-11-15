@@ -1,4 +1,4 @@
-const request = require('request-promise');
+const fetch = require('node-fetch');
 
 class ApiService {
 
@@ -30,16 +30,13 @@ class ApiService {
     return this._initialize().then(() => {
       const options = {
         method: 'GET',
-        uri: `${this.host}/${this.prefix}/accounts/streaming-credentials`,
         headers: this.headers,
         json: false
       };
 
-      // TODO: 06-21-2017: fleschec: Remove this when 3Scale fixes their cert problems with https://api.beta.dowjones.io/
-      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+      const uri = `${this.host}/${this.prefix}/accounts/streaming-credentials`;
 
-      return request(options).then((response) => {
-        const result = JSON.parse(response);
+      return fetch(uri, options).then(response => response.json()).then(result => {
         if (!result.data || !result.data.attributes || !result.data.attributes.streaming_credentials) {
           throw new Error('Error: Unable to find streaming credentials for given account');
         }
@@ -58,13 +55,13 @@ class ApiService {
       const accountId = this.headers.Authorization ? this.credentials.client_id : this.headers['user-key'];
       const options = {
         method: 'GET',
-        uri: `${this.host}/${this.prefix}/accounts/${accountId}`,
         headers: this.headers,
         json: false
       };
 
-      return request(options).then((response) => {
-        const result = JSON.parse(response);
+      const uri = `${this.host}/${this.prefix}/accounts/${accountId}`;
+
+      return fetch(uri, options).then(response => response.json()).then(result => {
         if (!result.data || !result.data.attributes) {
           throw new Error('Error: Unable to find account info');
         }
@@ -83,12 +80,12 @@ class ApiService {
 
       const options = {
         method: 'GET',
-        uri: `${this.host}/${this.prefix}/streams/${streamId}`,
         headers: this.headers
       };
 
-      return request(options).then((response) => {
-        const result = JSON.parse(response);
+      const uri = `${this.host}/${this.prefix}/streams/${streamId}`;
+
+      return fetch(uri, options).then(response => response.json()).then(result => {
         if (!result.data || !result.data.attributes || !result.data.attributes.job_status) {
           throw new Error('Error: Unable to find stream for given subscription ID');
         }

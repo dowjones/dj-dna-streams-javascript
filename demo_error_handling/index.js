@@ -19,4 +19,4 @@ const onMessageCallback = (msg, handleErr) => {
 
 const listener = new Listener();
 
-listener.listen(onMessageCallback, null, true);
+listener.listen(onMessageCallback, null, false);
