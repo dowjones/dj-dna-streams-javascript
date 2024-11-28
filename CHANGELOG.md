@@ -121,3 +121,10 @@
 ==================
 - [changed] - updated to latest dependencies
 - [changed] - removed support of JWT authentication
+
+1.3.0 / 2024-11-28
+==================
+- [changed] - Added a shutdown listener method
+- [breaking] - Fixed messages being acknowledged even after a callback failure. See "Migrating from a synchronous callback function" section from the README.md
+- [changed] - Updated to latest dependencies
+- [changed] - Implemented usage of node-fetch after requests deprecation
