@@ -13,12 +13,8 @@ npm install git+https://git@github.com/dowjones/dj-dna-streams-javascript.git --
 ```
 
 Alternatively you can simply check out this project from Git.
-
-### Authentication
-
-User Key
    
-### Configuring The App
+### Authentication
 
 There are three ways to pass configuration variables to the app. Please note that environment variables (Option 1) will override values provided in the `customerConfig.json` file (Option 2).  
 They will not override values passed directly to the `Listener` constructor (Option 3).
