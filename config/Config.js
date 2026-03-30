@@ -8,6 +8,7 @@ class Config {
 
     this.Constants = {
       USER_KEY_ENV: 'USER_KEY',
+      OAUTH_TOKEN_ENV: 'OAUTH_TOKEN',
       SUBSCRIPTION_ID_ENV: 'SUBSCRIPTION_ID',
       API_HOST_ENV: 'API_HOST',
       API_HOST_DEFAULT: 'https://api.dowjones.com',
@@ -48,19 +49,29 @@ class Config {
 
     return this._areCredsSet(accountCreds) ? accountCreds : new Error(
       'Error: No account credentials specified\n' +
-      'Must specify user_key as args to Listener constructor, env vars, or via customerConfig.json file\n' +
+      'Must specify user_key or oauth_token as args to Listener constructor, env vars, or via customerConfig.json file\n' +
       'See dj-dna-streaming-javascript README.md'
     );
   }
 
   _initCredsFromEnv() {
-    return {
-      user_key: process.env[this.Constants.USER_KEY_ENV]
-    };
+    
+    let user_key = process.env[this.Constants.USER_KEY_ENV]
+    let oauth_token = process.env[this.Constants.OAUTH_TOKEN_ENV]
+    
+    if (user_key) {
+      return {
+        user_key: user_key
+      }
+    } else {
+      return {
+        oauth_token: oauth_token
+      }
+    }
   }
 
   _areCredsSet(accountCreds) {
-    return accountCreds && accountCreds.user_key;
+    return accountCreds && (accountCreds.user_key || accountCreds.oauth_token);
   }
 }
 

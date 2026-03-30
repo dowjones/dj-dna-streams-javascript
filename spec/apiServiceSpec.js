@@ -17,15 +17,12 @@ describe('API service', () => {
   afterEach(() => {
     sandbox.restore();
     apiService.headers = null;
-    apiService.prefix = null;
   });
 
   it('should initialize correctly given service account credentials', () => {
     // Arrange
     apiService.credentials = {
-      user_id: 'user_id',
-      client_id: 'client_id',
-      password: 'password'
+      user_id: 'user_id'
     };
 
     // Act
@@ -34,7 +31,6 @@ describe('API service', () => {
       // Assert
       expect(getServiceAccountHeadersStub.calledOnce).toBe(true);
       expect(apiService.headers).toEqual(serviceAccountHeaders);
-      expect(apiService.prefix).toBe('dna');
     });
   });
 
@@ -48,7 +44,6 @@ describe('API service', () => {
 
       // Assert
       expect(apiService.headers.user_key).toEqual(headersExpected.user_key);
-      expect(apiService.prefix).toBe('alpha');
     });
   });
 

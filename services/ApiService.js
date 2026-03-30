@@ -10,17 +10,19 @@ class ApiService {
   // the reason this is outside the constructor is that getting headers is async
   // want to keep async operations outside of constructor
   _initialize() {
-    if (this.headers && this.prefix) {
+    if (this.headers) {
       // already initialized
       return Promise.resolve(true);
     } else if (this.credentials && this.credentials.user_key) {
       this.headers = { 'user-key': this.credentials.user_key };
-      this.prefix = 'alpha';
+      return Promise.resolve(true);
+    } else if (this.credentials && this.credentials.oauth_token) {
+      this.headers = { 'Authorization': `Bearer ${this.credentials.oauth_token}` };
       return Promise.resolve(true);
     } else {
       return Promise.reject(new Error(
         'Error: No account credentials specified\n' +
-        'Must specify user_key as args to Listener constructor, env vars, or via customerConfig.json file\n' +
+        'Must specify user_key or oauth_token as args to Listener constructor, env vars, or via customerConfig.json file\n' +
         'See dj-dna-streaming-javascript README.md'
       ));
     }
@@ -34,7 +36,7 @@ class ApiService {
         json: false
       };
 
-      const uri = `${this.host}/${this.prefix}/accounts/streaming-credentials`;
+      const uri = `${this.host}/sns-accounts/streaming-credentials`;
 
       return fetch(uri, options).then(response => response.json()).then(result => {
         if (!result.data || !result.data.attributes || !result.data.attributes.streaming_credentials) {
@@ -52,14 +54,13 @@ class ApiService {
 
   getAccountInfo() {
     return this._initialize().then(() => {
-      const accountId = this.headers.Authorization ? this.credentials.client_id : this.headers['user-key'];
       const options = {
         method: 'GET',
         headers: this.headers,
         json: false
       };
 
-      const uri = `${this.host}/${this.prefix}/accounts/${accountId}`;
+      const uri = `${this.host}/sns-accounts`;
 
       return fetch(uri, options).then(response => response.json()).then(result => {
         if (!result.data || !result.data.attributes) {
@@ -83,7 +84,7 @@ class ApiService {
         headers: this.headers
       };
 
-      const uri = `${this.host}/${this.prefix}/streams/${streamId}`;
+      const uri = `${this.host}/streams/${streamId}`;
 
       return fetch(uri, options).then(response => response.json()).then(result => {
         if (!result.data || !result.data.attributes || !result.data.attributes.job_status) {
