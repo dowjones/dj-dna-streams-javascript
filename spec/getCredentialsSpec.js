@@ -23,7 +23,7 @@ describe('getCredentials', () => {
       json: true
     };
 
-    const uri = 'http://localhost:8080/alpha/accounts/streaming-credentials';
+    const uri = 'http://localhost:8080/sns-accounts/streaming-credentials';
 
     fetch(uri, options)
       .then(() => {

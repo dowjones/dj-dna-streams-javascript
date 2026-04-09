@@ -128,3 +128,7 @@
 - [breaking] - Fixed messages being acknowledged even after a callback failure. See "Migrating from a synchronous callback function" section from the README.md
 - [changed] - Updated to latest dependencies
 - [changed] - Implemented usage of node-fetch after requests deprecation
+
+1.4.0 / 2026-04-09
+==================
+- [changed] - Enabled authentication via OAuth Bearer Token
